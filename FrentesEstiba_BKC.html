@@ -337,7 +337,7 @@ IMPORTANTE:
 - Si el código es 7038 inclúilo igual con fecha_vencimiento null.
 - Devolvé SOLO el JSON.`;
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://anthropic-proxy.lmedinadm.workers.dev/', {
       method:'POST',
       headers:{
         'Content-Type':'application/json',
