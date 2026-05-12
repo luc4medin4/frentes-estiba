@@ -8,9 +8,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
-:root{--navy:#0d2340;--gold:#c9a227;--yellow:#f5c518;--white:#fff;--light:#f4f6f9;--gray:#8a9ab5;--border:#dde3ed;--green:#2e9e6b;}
+:root{
+  --navy:#0d2340;
+  --gold:#c9a227;
+  --yellow:#f5c518;
+  --white:#fff;
+  --light:#f4f6f9;
+  --gray:#8a9ab5;
+  --border:#dde3ed;
+  --green:#2e9e6b;
+  /* LIGHT CARD PALETTE */
+  --card-bg:#ffffff;
+  --card-border:#e2e8f0;
+  --card-shadow:0 2px 12px rgba(13,35,64,.08);
+  --page-bg:#f0f3f8;
+  --accent-gold:#c9a227;
+  --accent-yellow:#f5c518;
+  --text-primary:#0d2340;
+  --text-secondary:#64748b;
+  --text-muted:#94a3b8;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Barlow',sans-serif;background:#eef1f7;color:var(--navy);}
+body{font-family:'Barlow',sans-serif;background:var(--page-bg);color:var(--navy);}
 .header{background:var(--navy);padding:14px 28px;display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;}
 .header img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);}
 .header h1{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;letter-spacing:1px;line-height:1;}
@@ -19,7 +38,7 @@ body{font-family:'Barlow',sans-serif;background:#eef1f7;color:var(--navy);}
 .badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
 
 .container{max-width:900px;margin:28px auto;padding:0 20px;}
-.card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:24px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,35,64,.06);}
+.card{background:var(--card-bg);border-radius:12px;border:1px solid var(--card-border);padding:24px;margin-bottom:18px;box-shadow:var(--card-shadow);}
 .card-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .step{background:var(--navy);color:var(--gold);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
 
@@ -73,29 +92,97 @@ body{font-family:'Barlow',sans-serif;background:#eef1f7;color:var(--navy);}
 .bc-skip{background:#f3f4f6;color:var(--gray);padding:2px 9px;border-radius:12px;font-size:11px;}
 .vd{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--green);}
 
-/* FRENTES PREVIEW */
-.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:14px;margin-top:14px;}
-.fe{border:2px solid var(--border);border-radius:10px;overflow:hidden;font-family:'Barlow Condensed',sans-serif;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.07);}
-.fe-hdr{background:var(--navy);color:var(--gold);padding:7px 12px;display:flex;justify-content:space-between;font-size:10px;font-weight:700;letter-spacing:.5px;}
-.fe-hdr span{color:#fff;}
-.fe-body{padding:12px;}
-.fe-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
-.fe-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;}
-.fe-cod{font-size:26px;font-weight:900;color:var(--navy);line-height:1;}
-.fe-prod{font-size:11px;font-weight:700;color:#444;text-transform:uppercase;line-height:1.3;margin-top:3px;}
-.fe-vlbl{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:2px;}
-.fe-vfecha{font-size:30px;font-weight:900;color:var(--navy);background:var(--yellow);padding:5px 10px;border-radius:5px;display:inline-block;margin:3px 0 10px 0;}
-.fe-main{display:flex;gap:10px;align-items:flex-start;}
-.fe-qr{flex-shrink:0;}
-.fe-qr canvas,.fe-qr img{width:72px!important;height:72px!important;border-radius:4px;border:1px solid var(--border);}
-.fe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px;flex:1;}
-.fe-cell .lbl{font-size:9px;color:var(--gray);display:block;text-transform:uppercase;letter-spacing:.5px;}
-.fe-cell .val{font-size:12px;font-weight:700;color:var(--navy);}
-.fe-sep{border-top:1px solid var(--border);margin:8px 0;}
+/* ═══════════════════════════════════════════════════
+   FRENTES PREVIEW — MODO CLARO (light card design)
+   ═══════════════════════════════════════════════════ */
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:18px;margin-top:14px;}
+
+.fe{
+  border:1.5px solid #d1d9e8;
+  border-radius:14px;
+  overflow:hidden;
+  font-family:'Barlow Condensed',sans-serif;
+  background:#ffffff;
+  box-shadow:0 4px 18px rgba(13,35,64,.10);
+}
+
+/* Header strip: white bg, subtle border bottom */
+.fe-hdr{
+  background:#ffffff;
+  border-bottom:1.5px solid #e2e8f2;
+  padding:9px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.6px;
+  color:var(--text-secondary);
+}
+.fe-hdr .fe-hdr-left{display:flex;align-items:center;gap:9px;}
+.fe-hdr .fe-hdr-logo{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;}
+.fe-hdr .fe-hdr-brand{display:flex;flex-direction:column;line-height:1.2;}
+.fe-hdr .fe-hdr-brand strong{font-size:11px;color:var(--navy);font-weight:900;letter-spacing:.5px;}
+.fe-hdr .fe-hdr-brand span{font-size:9px;color:var(--text-secondary);letter-spacing:1px;text-transform:uppercase;}
+.fe-hdr .fe-hdr-right{font-size:9px;color:var(--text-muted);text-align:right;line-height:1.4;}
+
+.fe-body{padding:14px 16px 12px;}
+
+/* Code + product name row */
+.fe-top{display:flex;align-items:flex-start;gap:0;margin-bottom:2px;border-bottom:1px solid #eef1f8;padding-bottom:10px;}
+.fe-cod-block{flex:1;}
+.fe-cod-lbl{font-size:9px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:1px;}
+.fe-cod{font-size:30px;font-weight:900;color:var(--navy);line-height:1;letter-spacing:-0.5px;}
+.fe-prod{font-size:11.5px;font-weight:700;color:#334155;text-transform:uppercase;line-height:1.3;margin-top:4px;letter-spacing:.3px;}
+.fe-top-qr{flex-shrink:0;margin-left:10px;align-self:center;}
+.fe-top-qr canvas,.fe-top-qr img{width:62px!important;height:62px!important;border-radius:5px;border:1.5px solid #d1d9e8;}
+
+/* Vencimiento block — prominent yellow card */
+.fe-vblock{
+  background:var(--yellow);
+  border-radius:8px;
+  padding:7px 12px 6px;
+  margin:10px 0 10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.fe-vlbl{font-size:9px;color:rgba(0,0,0,.55);font-weight:800;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:1px;}
+.fe-vfecha{font-size:28px;font-weight:900;color:#0d2340;line-height:1;letter-spacing:-.5px;}
+.fe-vblock-right{font-size:9px;color:rgba(0,0,0,.5);text-align:right;line-height:1.6;}
+.fe-vblock-right strong{display:block;font-size:10px;color:#0d2340;font-weight:800;}
+
+/* Data grid */
+.fe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.fe-cell{
+  background:#f6f8fc;
+  border:1px solid #e2e8f2;
+  border-radius:6px;
+  padding:5px 8px;
+}
+.fe-cell .lbl{font-size:8.5px;color:var(--text-muted);display:block;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;}
+.fe-cell .val{font-size:12.5px;font-weight:800;color:var(--navy);}
+
+/* Pallet badge */
+.fe-pallet-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:var(--navy);
+  color:var(--gold);
+  border-radius:6px;
+  padding:3px 10px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.5px;
+}
+
+.fe-sep{border-top:1px solid #e8ecf4;margin:8px 0;}
 .fe-foot{display:flex;justify-content:space-between;align-items:center;font-size:10px;}
-.fe-ctrl .lbl{color:var(--gray);}
-.fe-ctrl .val{font-weight:700;color:var(--navy);}
-.fe-pnum{color:var(--gray);}
+.fe-ctrl-info{display:flex;gap:14px;}
+.fe-ctrl-item .lbl{font-size:8.5px;color:var(--text-muted);display:block;letter-spacing:.5px;text-transform:uppercase;}
+.fe-ctrl-item .val{font-size:11px;font-weight:800;color:var(--navy);}
+
 /* hidden QR helper */
 #qr-hidden{position:fixed;left:-9999px;top:-9999px;}
 </style>
