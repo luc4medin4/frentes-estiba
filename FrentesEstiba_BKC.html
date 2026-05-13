@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v15</title>
+<title>Frentes de Estiba — BKCC v16</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -126,7 +126,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-venc-row{background:var(--yellow);border-radius:10px;padding:6px 14px 8px 14px;display:flex;flex-direction:column;align-items:flex-start;}
 .fe-venc-left{width:100%;}
 .fe-vlbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:0px;}
-.fe-vfecha{font-family:'Oswald',sans-serif;font-size:96px;font-weight:700;color:var(--navy);line-height:.95;letter-spacing:-1px;display:block;}
+.fe-vfecha{font-family:'Oswald',sans-serif;font-size:52px;font-weight:700;color:var(--navy);line-height:.95;letter-spacing:-1px;display:block;}
 .fe-recep{text-align:right;}
 .fe-recep-lbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;}
 .fe-recep-val{font-size:13px;font-weight:700;color:var(--navy);display:block;}
@@ -137,15 +137,15 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-cell .lbl{font-size:7.5px;color:#AAA;display:block;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:3px;}
 .fe-cell .val{font-size:13px;font-weight:700;color:var(--navy);display:block;}
 
-/* Footer: ABC + Pallet badge */
+/* Footer: CANCHA negro izquierda + ALMACÉN claro derecha */
 .fe-sep{border-top:1px solid var(--border);margin:2px 0;}
 .fe-foot{display:flex;justify-content:space-between;align-items:stretch;gap:8px;}
-.fe-abc-block{background:#F5F4F0;border:1px solid #E8E5DE;border-radius:8px;padding:8px 14px;flex:1;}
-.fe-abc-lbl{font-size:8px;color:#AAA;text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:2px;}
-.fe-abc-val{font-size:22px;font-weight:900;color:var(--navy);}
-.fe-pallet-block{background:var(--navy);border-radius:8px;padding:8px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;}
-.fe-pallet-lbl{font-size:8px;color:var(--yellow);text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:2px;}
-.fe-pnum{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--yellow);line-height:1;}
+.fe-abc-block{background:var(--navy);border-radius:8px;padding:8px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;}
+.fe-abc-lbl{font-size:8px;color:var(--yellow);text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:2px;}
+.fe-abc-val{font-size:22px;font-weight:900;color:var(--yellow);}
+.fe-pallet-block{background:#F5F4F0;border:1px solid #E8E5DE;border-radius:8px;padding:8px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;}
+.fe-pallet-lbl{font-size:8px;color:#AAA;text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:2px;}
+.fe-pnum{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--navy);line-height:1;}
 
 /* Controlador */
 .fe-ctrl-row{display:flex;justify-content:space-between;align-items:center;padding-top:2px;}
@@ -260,9 +260,9 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     justify-content: space-between !important;
   }
 
-  /* Código + descripción mismo tamaño */
-  .fe-cod-lbl   { font-size: 16px !important; letter-spacing: 1.5px !important; }
-  .fe-cod       { font-size: 72px !important; line-height: 1 !important; font-weight: 700 !important; font-family: 'Barlow Condensed', sans-serif !important; }
+  /* Código + descripción mismo tamaño — label CÓDIGO oculto en impresión */
+  .fe-cod-lbl   { display: none !important; }
+  .fe-cod       { font-size: 90px !important; line-height: 1 !important; font-weight: 700 !important; font-family: 'Barlow Condensed', sans-serif !important; }
   .fe-prod      { font-size: 72px !important; line-height: 1.05 !important; font-weight: 700 !important; max-width: 420px !important; -webkit-line-clamp: 2 !important; }
 
   /* QR más grande */
@@ -301,17 +301,17 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   .fe-cell .lbl { color: #AAAAAA !important; font-size: 14px !important; letter-spacing: 1.2px !important; }
   .fe-cell .val { color: #1A1A1A !important; font-size: 28px !important; font-weight: 700 !important; }
 
-  /* Footer ABC + Pallet — bloques destacados */
+  /* Footer CANCHA negro izq + ALMACÉN claro der */
   .fe-abc-block, .fe-pallet-block {
     padding: 22px 28px !important;
     border-radius: 14px !important;
   }
-  .fe-abc-block { background: #F5F4F0 !important; border: 1px solid #E8E5DE !important; }
-  .fe-pallet-block { background: #1A1A1A !important; }
-  .fe-abc-lbl    { color: #AAAAAA !important; font-size: 14px !important; letter-spacing: 1.5px !important; }
-  .fe-abc-val    { color: #1A1A1A !important; font-size: 56px !important; font-weight: 900 !important; line-height: 1 !important; }
-  .fe-pallet-lbl { color: #F0C040 !important; font-size: 14px !important; letter-spacing: 1.5px !important; }
-  .fe-pnum       { color: #F0C040 !important; font-size: 56px !important; font-weight: 900 !important; line-height: 1 !important; }
+  .fe-abc-block  { background: #1A1A1A !important; border: none !important; }
+  .fe-pallet-block { background: #F5F4F0 !important; border: 1px solid #E8E5DE !important; }
+  .fe-abc-lbl    { color: #FAEA8A !important; font-size: 14px !important; letter-spacing: 1.5px !important; }
+  .fe-abc-val    { color: #FAEA8A !important; font-size: 56px !important; font-weight: 900 !important; line-height: 1 !important; }
+  .fe-pallet-lbl { color: #AAAAAA !important; font-size: 14px !important; letter-spacing: 1.5px !important; }
+  .fe-pnum       { color: #1A1A1A !important; font-size: 46px !important; font-weight: 900 !important; line-height: 1 !important; }
 
   /* Footer controlador */
   .fe-ctrl-lbl  { color: #AAAAAA !important; font-size: 13px !important; letter-spacing: 1.5px !important; }
@@ -814,16 +814,16 @@ function renderPreview() {
             ${cell('RECEPCIÓN', remito.fecha||'—')}
           </div>
 
-          <!-- Footer: ABC (claro) + PALLET (negro) -->
+          <!-- Footer: CANCHA (negro izq) + ALMACÉN (claro der) -->
           <div class="fe-sep"></div>
           <div class="fe-foot">
             <div class="fe-abc-block">
-              <span class="fe-abc-lbl">ABC</span>
-              <span class="fe-abc-val">${it.d.abc||'—'}</span>
+              <span class="fe-abc-lbl">CANCHA</span>
+              <span class="fe-abc-val">${it.d.cancha||'—'}</span>
             </div>
             <div class="fe-pallet-block">
-              <span class="fe-pallet-lbl">PALLET</span>
-              <span class="fe-pnum">${p} / ${it.nFrentes}</span>
+              <span class="fe-pallet-lbl">ALMACÉN</span>
+              <span class="fe-pnum">${it.d.almacen||'—'}</span>
             </div>
           </div>
 
@@ -976,22 +976,22 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const ftH = 22;
   const halfW = (cw - 4) / 2;
 
-  // ABC block (izquierdo claro)
-  doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
-  doc.roundedRect(cx, ftY, halfW, ftH, 2, 2, 'FD');
-  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
-  doc.text('ABC', cx+5, ftY+7);
-  doc.setFontSize(20); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(it.d.abc||'—', cx+5, ftY+19);
-
-  // PALLET block (derecho negro)
-  const palX = cx + halfW + 4;
+  // CANCHA block (negro izquierda)
   doc.setFillColor(...navy);
-  doc.roundedRect(palX, ftY, halfW, ftH, 2, 2, 'F');
+  doc.roundedRect(cx, ftY, halfW, ftH, 2, 2, 'F');
   doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text('PALLET', palX+5, ftY+7);
-  doc.setFontSize(22); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text(`${palletNum} / ${it.nFrentes}`, palX+5, ftY+19);
+  doc.text('CANCHA', cx+5, ftY+7);
+  doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text(String(it.d.cancha||'—'), cx+5, ftY+19);
+
+  // ALMACÉN block (claro derecha)
+  const palX = cx + halfW + 4;
+  doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
+  doc.roundedRect(palX, ftY, halfW, ftH, 2, 2, 'FD');
+  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
+  doc.text('ALMACÉN', palX+5, ftY+7);
+  doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(String(it.d.almacen||'—'), palX+5, ftY+19);
 
   // ── CONTROLADOR ROW ──
   const ctrlY = ftY + ftH + 8;
