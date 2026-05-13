@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v16</title>
+<title>Frentes de Estiba — BKCC v17</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -805,10 +805,10 @@ function renderPreview() {
           <div class="fe-grid">
             ${cell('BULTOS / PALLET', it.bulPal||'—')}
             ${cell('APILABILIDAD', it.d.apil||'—')}
-            ${cell('CANCHA', it.d.cancha||'—')}
+            ${cell('ABC', it.d.abc||'—')}
             ${cell('PRE-BLOQUEO', it.preBlq||'—')}
             ${cell('BLOQUEO', it.blq||'—')}
-            ${cell('ALMACÉN', it.d.almacen||'—')}
+            ${cell('PALLET', p+' / '+it.nFrentes)}
             ${cell('KG / BULTO', it.d.peso||'—')}
             ${cell('HL / BULTO', it.d.hl||'—')}
             ${cell('RECEPCIÓN', remito.fecha||'—')}
@@ -944,10 +944,10 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const cells = [
     ['BULTOS / PALLET', it.bulPal||'—'],
     ['APILABILIDAD',    it.d.apil||'—'],
-    ['CANCHA',          it.d.cancha||'—'],
+    ['ABC',             it.d.abc||'—'],
     ['PRE-BLOQUEO',     it.preBlq||'—'],
     ['BLOQUEO',         it.blq||'—'],
-    ['ALMACÉN',         it.d.almacen||'—'],
+    [`PALLET`,          `${palletNum} / ${it.nFrentes}`],
     ['KG / BULTO',      it.d.peso||'—'],
     ['HL / BULTO',      it.d.hl||'—'],
     ['RECEPCIÓN',       remito.fecha||'—'],
