@@ -202,10 +202,12 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     gap: 0 !important;
   }
 
-  /* Tarjeta: ocupa toda la página */
+  /* Tarjeta: ocupa TODA la página A4 (297mm - 6mm top - 6mm bottom = 285mm) */
   .fe {
     width: 100% !important;
     max-width: 100% !important;
+    height: 285mm !important;
+    min-height: 285mm !important;
     margin: 0 !important;
     padding: 0 !important;
     border: 1.5px solid #DDD9CE !important;
@@ -222,6 +224,17 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   .fe:last-child {
     page-break-after: avoid !important;
     break-after: avoid !important;
+  }
+  /* El body de la tarjeta crece para llenar el espacio restante */
+  .fe-body {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+  /* La grilla de datos ocupa más espacio disponible */
+  .fe-grid {
+    flex: 1 !important;
   }
 
   /* Forzar colores de fondo de cada sección */
@@ -264,6 +277,16 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   .fe-ctrl-lbl { color: #AAAAAA !important; }
   .fe-ctrl-val { color: #c9a227 !important; }
 
+  /* Escalar fuentes para llenar la página — igualar a la vista previa */
+  .fe-cod      { font-size: 52pt !important; }
+  .fe-prod     { font-size: 18pt !important; max-width: none !important; }
+  .fe-vfecha   { font-size: 72pt !important; }
+  .fe-recep-val{ font-size: 15pt !important; }
+  .fe-cell .val{ font-size: 14pt !important; }
+  .fe-abc-val  { font-size: 26pt !important; }
+  .fe-pnum     { font-size: 28pt !important; }
+  .fe-ctrl-val { font-size: 13pt !important; color: #c9a227 !important; }
+
   /* QR canvas visible en impresión */
   .fe-qr canvas, .fe-qr img {
     display: block !important;
@@ -281,7 +304,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v10 Impresión Directa</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v10.1 Impresión Directa</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 4.0</span>
