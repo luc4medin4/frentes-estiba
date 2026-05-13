@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v11</title>
+<title>Frentes de Estiba — BKCC v13</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&family=Oswald:wght@300;400;500;700&display=swap');
-:root{--navy:#1A1A1A;--gold:#c9a227;--yellow:#F0C040;--white:#fff;--light:#F5F4F0;--gray:#8a9ab5;--border:#DDD9CE;--green:#2e9e6b;--cream:#FAFAF7;}
+:root{--navy:#1A1A1A;--gold:#c9a227;--yellow:#F7DC6F;--white:#fff;--light:#F5F4F0;--gray:#8a9ab5;--border:#DDD9CE;--green:#2e9e6b;--cream:#FAFAF7;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .header{background:var(--navy);padding:14px 28px;display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--yellow);position:sticky;top:0;z-index:100;}
@@ -117,8 +117,8 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-top{display:flex;justify-content:space-between;align-items:flex-start;}
 .fe-code-area{}
 .fe-cod-lbl{font-size:9px;font-weight:700;color:#AAA;text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:2px;}
-.fe-cod{font-size:38px;font-weight:500;color:var(--navy);line-height:1;font-family:'Oswald',sans-serif;letter-spacing:0px;}
-.fe-prod{font-size:20px;font-weight:600;color:#222;text-transform:uppercase;line-height:1.3;margin-top:6px;letter-spacing:.3px;max-width:220px;font-family:'Barlow Condensed',sans-serif;}
+.fe-cod{font-size:46px;font-weight:700;color:var(--navy);line-height:1;font-family:'Oswald',sans-serif;letter-spacing:0px;}
+.fe-prod{font-size:28px;font-weight:700;color:#222;text-transform:uppercase;line-height:1.2;margin-top:6px;letter-spacing:.3px;max-width:210px;font-family:'Barlow Condensed',sans-serif;word-break:break-word;}
 .fe-qr{flex-shrink:0;}
 .fe-qr canvas,.fe-qr img{width:110px!important;height:110px!important;border-radius:6px;border:1px solid var(--border);}
 
@@ -126,7 +126,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-venc-row{background:var(--yellow);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;}
 .fe-venc-left{}
 .fe-vlbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:2px;}
-.fe-vfecha{font-family:'Oswald',sans-serif;font-size:58px;font-weight:400;color:var(--navy);line-height:1;letter-spacing:0px;display:block;}
+.fe-vfecha{font-family:'Oswald',sans-serif;font-size:72px;font-weight:400;color:var(--navy);line-height:1;letter-spacing:0px;display:block;}
 .fe-recep{text-align:right;}
 .fe-recep-lbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;}
 .fe-recep-val{font-size:13px;font-weight:700;color:var(--navy);display:block;}
@@ -557,17 +557,18 @@ Extraé EXACTAMENTE estos datos en JSON puro (sin markdown, sin texto extra):
     {
       "codigo": "código numérico del artículo (columna Código)",
       "descripcion": "descripción completa",
-      "bultos": número entero (columna Bultos — cantidad total de bultos recibidos),
+      "bultos": número entero (columna Bultos — IMPORTANTE: es la columna BULTOS del detalle, NO la columna Pallets. Puede ser un número grande como 1320, 204, 96, 120. Si el campo está resaltado en amarillo igual tomá el valor numérico),
       "fecha_vencimiento": "DD/MM/YYYY o null"
     }
   ]
 }
 
 IMPORTANTE:
-- "bultos" es la columna Bultos del detalle de artículos. Si no existe, usá Unids.
+- "bultos" es la columna "Bultos" del detalle de artículos. Puede ser un número grande (ej: 1320, 204, 96). NO confundir con la columna Pallets que puede ser 0 o vacío.
+- Si la celda está resaltada en amarillo igual lee el número.
 - fecha_vencimiento es la columna "Fecha Vto." de cada artículo.
 - Si el código es 7038 inclúilo igual con fecha_vencimiento null.
-- Devolvé SOLO el JSON.`;
+- Devolvé SOLO el JSON sin ningún texto adicional.`;
 
     const res = await fetch('https://anthropic-proxy.lmedinadm.workers.dev/', {
       method:'POST',
@@ -713,7 +714,8 @@ function buildResults(parsed) {
 
 // ─── QR CODE HELPER ──────────────────────────────────────────────────────────
 function makeQRText(it, palNum) {
-  return `REM:${remito.num}|COD:${it.cod}|${it.desc.substring(0,30)}|VTO:${it.venc||'S/F'}|PAL:${palNum}/${it.nFrentes}|CTRL:${ctrl}`;
+  const vencFmt = it.venc ? it.venc.replace(/\//g,'-') : 'S/F';
+  return `${it.cod};${vencFmt};${it.bulPal||'—'}`;
 }
 
 // Generate QR canvas (returns Promise<HTMLCanvasElement|null>)
@@ -790,41 +792,37 @@ function renderPreview() {
             <div class="fe-qr" id="${qrId}"></div>
           </div>
 
-          <!-- Vencimiento + Recepción -->
+          <!-- Vencimiento (sin recepción aquí) -->
           <div class="fe-venc-row">
             <div class="fe-venc-left">
               <span class="fe-vlbl">VENCIMIENTO</span>
               <span class="fe-vfecha">${it.venc||'SIN FECHA'}</span>
             </div>
-            <div class="fe-recep">
-              <span class="fe-recep-lbl">RECEPCIÓN</span>
-              <span class="fe-recep-val">${remito.fecha}</span>
-            </div>
           </div>
 
-          <!-- Grid 3×3 datos -->
+          <!-- Grid 3×3 datos (RECEPCIÓN en la celda vacía) -->
           <div class="fe-grid">
             ${cell('BULTOS / PALLET', it.bulPal||'—')}
             ${cell('APILABILIDAD', it.d.apil||'—')}
-            ${cell('CANCHA', it.d.cancha||'—')}
+            ${cell('KG / BULTO', it.d.peso||'—')}
             ${cell('PRE-BLOQUEO', it.preBlq||'—')}
             ${cell('BLOQUEO', it.blq||'—')}
-            ${cell('ALMACÉN', it.d.almacen||'—')}
-            ${cell('KG / BULTO', it.d.peso||'—')}
             ${cell('HL / BULTO', it.d.hl||'—')}
+            ${cell('RECEPCIÓN', remito.fecha||'—')}
+            ${cell('—', '—')}
             ${cell('—', '—')}
           </div>
 
-          <!-- Footer: ABC + Pallet -->
+          <!-- Footer: CANCHA (antes ABC) + ALMACÉN (antes PALLET) -->
           <div class="fe-sep"></div>
           <div class="fe-foot">
             <div class="fe-abc-block">
-              <span class="fe-abc-lbl">ABC</span>
-              <span class="fe-abc-val">${it.d.abc||'—'}</span>
+              <span class="fe-abc-lbl">CANCHA</span>
+              <span class="fe-abc-val">${it.d.cancha||'—'}</span>
             </div>
             <div class="fe-pallet-block">
-              <span class="fe-pallet-lbl">PALLET</span>
-              <span class="fe-pnum">${p} / ${it.nFrentes}</span>
+              <span class="fe-pallet-lbl">ALMACÉN</span>
+              <span class="fe-pnum">${it.d.almacen||'—'}</span>
             </div>
           </div>
 
@@ -874,7 +872,7 @@ async function imprimirDirecto() {
 function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const navy   = [26, 26, 26];
   const gold   = [201, 162, 39];
-  const yellow = [240, 192, 64];
+  const yellow = [247, 220, 111];
   const white  = [255, 255, 255];
   const cream  = [245, 244, 240];
   const lgray  = [232, 229, 222];
@@ -937,25 +935,20 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
 
   doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
   doc.text('VENCIMIENTO', cx+5, vY+8);
-  doc.setFontSize(38); doc.setFont('helvetica','normal'); doc.setTextColor(...navy);
+  doc.setFontSize(42); doc.setFont('helvetica','normal'); doc.setTextColor(...navy);
   doc.text(it.venc||'SIN FECHA', cx+5, vY+28);
-
-  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
-  doc.text('RECEPCIÓN', W-mx-7-4, vY+8, {align:'right'});
-  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(remito.fecha, W-mx-7-4, vY+22, {align:'right'});
 
   // ── GRID 3×3 DATOS ──
   const gridY = vY + vH + 7;
   const cells = [
     ['BULTOS / PALLET', it.bulPal||'—'],
     ['APILABILIDAD',    it.d.apil||'—'],
-    ['CANCHA',          it.d.cancha||'—'],
+    ['KG / BULTO',      it.d.peso||'—'],
     ['PRE-BLOQUEO',     it.preBlq||'—'],
     ['BLOQUEO',         it.blq||'—'],
-    ['ALMACÉN',         it.d.almacen||'—'],
-    ['KG / BULTO',      it.d.peso||'—'],
     ['HL / BULTO',      it.d.hl||'—'],
+    ['RECEPCIÓN',       remito.fecha||'—'],
+    ['—',               '—'],
     ['—',               '—'],
   ];
   const colW = (cw - 6) / 3;
@@ -982,22 +975,22 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const ftH = 22;
   const halfW = (cw - 4) / 2;
 
-  // ABC block
+  // CANCHA block (antes ABC)
   doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
   doc.roundedRect(cx, ftY, halfW, ftH, 2, 2, 'FD');
   doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
-  doc.text('ABC', cx+5, ftY+7);
+  doc.text('CANCHA', cx+5, ftY+7);
   doc.setFontSize(20); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(it.d.abc||'—', cx+5, ftY+19);
+  doc.text(it.d.cancha||'—', cx+5, ftY+19);
 
-  // Pallet block
+  // ALMACÉN block (antes PALLET)
   const palX = cx + halfW + 4;
   doc.setFillColor(...navy);
   doc.roundedRect(palX, ftY, halfW, ftH, 2, 2, 'F');
   doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text('PALLET', palX+5, ftY+7);
-  doc.setFontSize(22); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text(`${palletNum} / ${it.nFrentes}`, palX+5, ftY+19);
+  doc.text('ALMACÉN', palX+5, ftY+7);
+  doc.setFontSize(16); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text(String(it.d.almacen||'—'), palX+5, ftY+19);
 
   // ── CONTROLADOR ROW ──
   const ctrlY = ftY + ftH + 8;
