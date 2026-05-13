@@ -217,7 +217,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     max-width: 210mm !important;
     max-height: 297mm !important;
     margin: 0 !important;
-    padding: 10mm !important;
+    padding: 8mm !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
@@ -241,80 +241,80 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   .fe-hdr {
     background: #1A1A1A !important;
     color: #fff !important;
-    padding: 14px 22px !important;
-    border-radius: 12px 12px 0 0 !important;
+    padding: 18px 26px !important;
+    border-radius: 14px 14px 0 0 !important;
     flex: 0 0 auto !important;
   }
-  .fe-hdr-logo { width: 48px !important; height: 48px !important; }
-  .fe-hdr-brand { font-size: 12px !important; color: #c9a227 !important; }
-  .fe-hdr-title { font-size: 18px !important; color: #fff !important; }
-  .fe-hdr-tag   { font-size: 12px !important; color: #c9a227 !important; }
+  .fe-hdr-logo { width: 56px !important; height: 56px !important; }
+  .fe-hdr-brand { font-size: 14px !important; color: #c9a227 !important; letter-spacing: 1.5px !important; }
+  .fe-hdr-title { font-size: 22px !important; color: #fff !important; }
+  .fe-hdr-tag   { font-size: 14px !important; color: #c9a227 !important; }
 
   /* Body: ocupar TODO el espacio restante con distribución pareja */
   .fe-body {
     flex: 1 1 auto !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 14px !important;
-    padding: 20px 22px !important;
+    gap: 18px !important;
+    padding: 26px 28px !important;
     justify-content: space-between !important;
   }
 
-  /* Código + descripción más grandes */
-  .fe-cod-lbl   { font-size: 14px !important; }
-  .fe-cod-num   { font-size: 60px !important; line-height: 1 !important; }
-  .fe-cod-desc  { font-size: 24px !important; line-height: 1.15 !important; }
+  /* Código + descripción GRANDES para lectura a distancia */
+  .fe-cod-lbl   { font-size: 16px !important; letter-spacing: 1.5px !important; }
+  .fe-cod-num   { font-size: 88px !important; line-height: 1 !important; font-weight: 900 !important; }
+  .fe-cod-desc  { font-size: 42px !important; line-height: 1.1 !important; font-weight: 700 !important; }
 
   /* QR más grande */
   .fe-qr canvas,
   .fe-qr img {
     display: block !important;
-    width: 150px !important;
-    height: 150px !important;
+    width: 180px !important;
+    height: 180px !important;
     border-radius: 8px !important;
   }
 
-  /* Bloque vencimiento gigante */
+  /* Bloque vencimiento GIGANTE — protagonista de la hoja */
   .fe-venc-row  {
     background: #F0C040 !important;
-    padding: 18px 24px !important;
-    border-radius: 14px !important;
+    padding: 26px 32px !important;
+    border-radius: 16px !important;
   }
-  .fe-vlbl      { color: #7A5E00 !important; font-size: 13px !important; }
-  .fe-vfecha    { color: #1A1A1A !important; font-size: 72px !important; line-height: 1 !important; }
-  .fe-recep-lbl { color: #7A5E00 !important; font-size: 13px !important; }
-  .fe-recep-val { color: #1A1A1A !important; font-size: 18px !important; }
+  .fe-vlbl      { color: #7A5E00 !important; font-size: 16px !important; letter-spacing: 2px !important; }
+  .fe-vfecha    { color: #1A1A1A !important; font-size: 110px !important; line-height: 1 !important; font-weight: 900 !important; }
+  .fe-recep-lbl { color: #7A5E00 !important; font-size: 16px !important; letter-spacing: 1.5px !important; }
+  .fe-recep-val { color: #1A1A1A !important; font-size: 26px !important; font-weight: 700 !important; }
 
-  /* Grid de celdas más grande */
+  /* Grid de celdas — info técnica clara */
   .fe-grid {
     display: grid !important;
     grid-template-columns: repeat(3,1fr) !important;
-    gap: 10px !important;
+    gap: 14px !important;
   }
   .fe-cell {
     background: #F5F4F0 !important;
     border: 1px solid #E8E5DE !important;
-    border-radius: 10px !important;
-    padding: 14px 16px !important;
-  }
-  .fe-cell .lbl { color: #AAAAAA !important; font-size: 11px !important; }
-  .fe-cell .val { color: #1A1A1A !important; font-size: 20px !important; }
-
-  /* Footer ABC + Pallet */
-  .fe-abc-block, .fe-pallet-block {
-    padding: 16px 20px !important;
     border-radius: 12px !important;
+    padding: 18px 22px !important;
+  }
+  .fe-cell .lbl { color: #AAAAAA !important; font-size: 14px !important; letter-spacing: 1.2px !important; }
+  .fe-cell .val { color: #1A1A1A !important; font-size: 28px !important; font-weight: 700 !important; }
+
+  /* Footer ABC + Pallet — bloques destacados */
+  .fe-abc-block, .fe-pallet-block {
+    padding: 22px 28px !important;
+    border-radius: 14px !important;
   }
   .fe-abc-block { background: #F5F4F0 !important; border: 1px solid #E8E5DE !important; }
   .fe-pallet-block { background: #1A1A1A !important; }
-  .fe-abc-lbl    { color: #AAAAAA !important; font-size: 12px !important; }
-  .fe-abc-val    { color: #1A1A1A !important; font-size: 36px !important; }
-  .fe-pallet-lbl { color: #F0C040 !important; font-size: 12px !important; }
-  .fe-pnum       { color: #F0C040 !important; font-size: 36px !important; }
+  .fe-abc-lbl    { color: #AAAAAA !important; font-size: 14px !important; letter-spacing: 1.5px !important; }
+  .fe-abc-val    { color: #1A1A1A !important; font-size: 56px !important; font-weight: 900 !important; line-height: 1 !important; }
+  .fe-pallet-lbl { color: #F0C040 !important; font-size: 14px !important; letter-spacing: 1.5px !important; }
+  .fe-pnum       { color: #F0C040 !important; font-size: 56px !important; font-weight: 900 !important; line-height: 1 !important; }
 
   /* Footer controlador */
-  .fe-ctrl-lbl  { color: #AAAAAA !important; font-size: 11px !important; }
-  .fe-ctrl-val  { color: #c9a227 !important; font-size: 14px !important; }
+  .fe-ctrl-lbl  { color: #AAAAAA !important; font-size: 13px !important; letter-spacing: 1.5px !important; }
+  .fe-ctrl-val  { color: #c9a227 !important; font-size: 18px !important; font-weight: 700 !important; }
 
   /* Ocultar warnings amarillos en impresión */
   .fe-warn { display: none !important; }
