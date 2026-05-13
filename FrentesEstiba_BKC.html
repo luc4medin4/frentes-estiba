@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&family=Oswald:wght@300;400;500;700&display=swap');
 :root{--navy:#1A1A1A;--gold:#c9a227;--yellow:#F0C040;--white:#fff;--light:#F5F4F0;--gray:#8a9ab5;--border:#DDD9CE;--green:#2e9e6b;--cream:#FAFAF7;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
@@ -117,8 +117,8 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-top{display:flex;justify-content:space-between;align-items:flex-start;}
 .fe-code-area{}
 .fe-cod-lbl{font-size:9px;font-weight:700;color:#AAA;text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:2px;}
-.fe-cod{font-size:56px;font-weight:900;color:var(--navy);line-height:1;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;}
-.fe-prod{font-size:12px;font-weight:700;color:#333;text-transform:uppercase;line-height:1.3;margin-top:4px;letter-spacing:.2px;max-width:220px;}
+.fe-cod{font-size:38px;font-weight:500;color:var(--navy);line-height:1;font-family:'Oswald',sans-serif;letter-spacing:0px;}
+.fe-prod{font-size:16px;font-weight:600;color:#222;text-transform:uppercase;line-height:1.3;margin-top:6px;letter-spacing:.3px;max-width:220px;font-family:'Barlow Condensed',sans-serif;}
 .fe-qr{flex-shrink:0;}
 .fe-qr canvas,.fe-qr img{width:64px!important;height:64px!important;border-radius:6px;border:1px solid var(--border);}
 
@@ -126,7 +126,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-venc-row{background:var(--yellow);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;}
 .fe-venc-left{}
 .fe-vlbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:2px;}
-.fe-vfecha{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--navy);line-height:1;letter-spacing:-1px;display:block;}
+.fe-vfecha{font-family:'Oswald',sans-serif;font-size:58px;font-weight:400;color:var(--navy);line-height:1;letter-spacing:0px;display:block;}
 .fe-recep{text-align:right;}
 .fe-recep-lbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;}
 .fe-recep-val{font-size:13px;font-weight:700;color:var(--navy);display:block;}
@@ -196,7 +196,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     <p>Sistema de Impresión · BKCC · DPO 2.1 · v8 Modo Vertical A4</p>
   </div>
   <div class="header-right">
-    <span class="badge">Almacén Digital 3.0</span>
+    <span class="badge">Almacén Digital 4.0</span>
   </div>
 </header>
 
@@ -240,9 +240,10 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
       ondrop="drop(event)">
       <input type="file" id="fileIn" accept="image/*" onchange="fileChg(event)">
       <span>📷</span>
-      <p><strong>Arrastrá o hacé clic para cargar la captura</strong></p>
-      <p style="margin-top:3px;font-size:11px;">PNG · JPG · WEBP — Pantalla completa del ingreso de remito en Chess</p>
+      <p><strong>Arrastrá, hacé clic o pegá con Ctrl+V</strong></p>
+      <p style="margin-top:3px;font-size:11px;">PNG · JPG · WEBP — Recorte de Windows (Ctrl+V directo) o archivo</p>
     </div>
+    <div id="pasteHint" style="margin-top:8px;font-size:12px;color:#2e9e6b;font-weight:600;display:none;">✅ Imagen pegada desde portapapeles</div>
     <img id="previewImg" alt="preview">
     <div class="loader" id="ldr"><div class="spin"></div><span id="ldrTxt">Procesando...</span></div>
     <div class="alert" id="alertMain"></div>
@@ -730,72 +731,73 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const lgray  = [232, 229, 222];
   const gray   = [170, 170, 170];
   const dkgray = [51, 51, 51];
-  const mx = 10;
+  const mx = 8;
 
-  // ── Marco exterior ──
+  // ── Marco exterior — usa TODA la hoja ──
   doc.setDrawColor(...lgray); doc.setLineWidth(0.6);
   doc.setFillColor(...white);
-  doc.roundedRect(mx, mx, W-mx*2, H-mx*2, 5, 5, 'FD');
+  doc.roundedRect(mx, mx, W-mx*2, H-mx*2, 4, 4, 'FD');
 
   // ── HEADER oscuro ──
+  const hdrH = 22;
   doc.setFillColor(...navy);
-  doc.roundedRect(mx, mx, W-mx*2, 18, 5, 5, 'F');
-  doc.rect(mx, mx+10, W-mx*2, 8, 'F');
+  doc.roundedRect(mx, mx, W-mx*2, hdrH, 4, 4, 'F');
+  doc.rect(mx, mx+hdrH/2, W-mx*2, hdrH/2, 'F');
 
-  // Logo (círculo amarillo placeholder)
-  const logoX = mx+5, logoY = mx+3, logoS = 12;
+  // Logo
+  const logoX = mx+6, logoY = mx+4, logoS = 14;
   try { doc.addImage(LOGO_URL, 'JPEG', logoX, logoY, logoS, logoS); } catch(e){}
 
   // Header texts left
-  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gold);
-  doc.text('BKCC · CERVECERÍA Y MALTERÍA QUILMES', logoX+logoS+4, mx+7);
-  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(...white);
-  doc.text('BECCACECE HNOS SA', logoX+logoS+4, mx+14);
+  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gold);
+  doc.text('BKCC · CERVECERÍA Y MALTERÍA QUILMES', logoX+logoS+5, mx+9);
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...white);
+  doc.text('BECCACECE HNOS SA', logoX+logoS+5, mx+18);
 
   // Header right
-  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gold);
-  doc.text('FRENTE DE ESTIBA · DPO 2.1', W-mx-5, mx+7, {align:'right'});
-  doc.text(`REM ${remito.num}`, W-mx-5, mx+13, {align:'right'});
+  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gold);
+  doc.text('FRENTE DE ESTIBA · DPO 2.1', W-mx-6, mx+9, {align:'right'});
+  doc.text(`REM ${remito.num}`, W-mx-6, mx+16, {align:'right'});
 
-  const bodyY = mx + 22;
-  const cx = mx + 5;
-  const cw = W - mx*2 - 10;
+  const bodyY = mx + hdrH + 8;
+  const cx = mx + 7;
+  const cw = W - mx*2 - 14;
 
   // ── CÓDIGO ──
-  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
+  doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
   doc.text('CÓDIGO', cx, bodyY);
-  doc.setFontSize(36); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(it.cod, cx, bodyY + 14);
+  doc.setFontSize(28); doc.setFont('helvetica','normal'); doc.setTextColor(...navy);
+  doc.text(it.cod, cx, bodyY + 12);
 
   // ── QR (top right) ──
-  const qrSize = 22;
+  const qrSize = 26;
   if (qrUrl) {
-    try { doc.addImage(qrUrl, 'PNG', W-mx-5-qrSize, bodyY-2, qrSize, qrSize); } catch(e){}
+    try { doc.addImage(qrUrl, 'PNG', W-mx-7-qrSize, bodyY-2, qrSize, qrSize); } catch(e){}
   }
 
   // ── DESCRIPCIÓN ──
-  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...dkgray);
-  const desc = it.desc.length>60 ? it.desc.substring(0,60)+'…' : it.desc;
-  doc.text(desc, cx, bodyY + 20);
+  doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.setTextColor(...dkgray);
+  const desc = it.desc.length>70 ? it.desc.substring(0,70)+'…' : it.desc;
+  doc.text(desc, cx, bodyY + 22);
 
-  // ── VENCIMIENTO BLOCK (yellow) ──
-  const vY = bodyY + 26;
-  const vH = 22;
+  // ── VENCIMIENTO BLOCK (yellow) — tamaño grande ──
+  const vY = bodyY + 30;
+  const vH = 34;
   doc.setFillColor(...yellow);
   doc.roundedRect(cx, vY, cw, vH, 3, 3, 'F');
 
-  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
-  doc.text('VENCIMIENTO', cx+4, vY+6);
-  doc.setFontSize(28); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(it.venc||'SIN FECHA', cx+4, vY+18);
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
+  doc.text('VENCIMIENTO', cx+5, vY+8);
+  doc.setFontSize(38); doc.setFont('helvetica','normal'); doc.setTextColor(...navy);
+  doc.text(it.venc||'SIN FECHA', cx+5, vY+28);
 
-  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
-  doc.text('RECEPCIÓN', W-mx-5-4, vY+6, {align:'right'});
-  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(remito.fecha, W-mx-5-4, vY+16, {align:'right'});
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
+  doc.text('RECEPCIÓN', W-mx-7-4, vY+8, {align:'right'});
+  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(remito.fecha, W-mx-7-4, vY+22, {align:'right'});
 
   // ── GRID 3×3 DATOS ──
-  const gridY = vY + vH + 5;
+  const gridY = vY + vH + 7;
   const cells = [
     ['BULTOS / PALLET', it.bulPal||'—'],
     ['APILABILIDAD',    it.d.apil||'—'],
@@ -807,53 +809,70 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
     ['HL / BULTO',      it.d.hl||'—'],
     ['—',               '—'],
   ];
-  const colW = (cw - 4) / 3;
-  const rowH = 14;
+  const colW = (cw - 6) / 3;
+  const rowH = 18;
   cells.forEach((c, i) => {
     const col = i % 3, row = Math.floor(i / 3);
-    const gx = cx + col * (colW + 2);
-    const gy = gridY + row * (rowH + 2);
+    const gx = cx + col * (colW + 3);
+    const gy = gridY + row * (rowH + 3);
     doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
     doc.roundedRect(gx, gy, colW, rowH, 2, 2, 'FD');
-    doc.setFontSize(5); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
-    doc.text(c[0], gx+3, gy+5);
-    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-    doc.text(String(c[1]).substring(0,16), gx+3, gy+11.5);
+    doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
+    doc.text(c[0], gx+3, gy+6);
+    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+    doc.text(String(c[1]).substring(0,18), gx+3, gy+14);
   });
 
   // ── SEPARATOR ──
-  const sepY = gridY + 3*(rowH+2) + 4;
-  doc.setDrawColor(...lgray); doc.setLineWidth(0.25);
-  doc.line(cx, sepY, W-mx-5, sepY);
+  const sepY = gridY + 3*(rowH+3) + 6;
+  doc.setDrawColor(...lgray); doc.setLineWidth(0.3);
+  doc.line(cx, sepY, W-mx-7, sepY);
 
   // ── FOOTER: ABC + PALLET ──
-  const ftY = sepY + 3;
-  const halfW = (cw - 3) / 2;
+  const ftY = sepY + 5;
+  const ftH = 22;
+  const halfW = (cw - 4) / 2;
 
   // ABC block
   doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
-  doc.roundedRect(cx, ftY, halfW, 16, 2, 2, 'FD');
-  doc.setFontSize(5); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
-  doc.text('ABC', cx+4, ftY+5.5);
-  doc.setFontSize(16); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(it.d.abc||'—', cx+4, ftY+14);
+  doc.roundedRect(cx, ftY, halfW, ftH, 2, 2, 'FD');
+  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
+  doc.text('ABC', cx+5, ftY+7);
+  doc.setFontSize(20); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(it.d.abc||'—', cx+5, ftY+19);
 
   // Pallet block
-  const palX = cx + halfW + 3;
+  const palX = cx + halfW + 4;
   doc.setFillColor(...navy);
-  doc.roundedRect(palX, ftY, halfW, 16, 2, 2, 'F');
-  doc.setFontSize(5); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text('PALLET', palX+4, ftY+5.5);
-  doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text(`${palletNum} / ${it.nFrentes}`, palX+4, ftY+14);
+  doc.roundedRect(palX, ftY, halfW, ftH, 2, 2, 'F');
+  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text('PALLET', palX+5, ftY+7);
+  doc.setFontSize(22); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text(`${palletNum} / ${it.nFrentes}`, palX+5, ftY+19);
 
   // ── CONTROLADOR ROW ──
-  const ctrlY = ftY + 20;
-  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
+  const ctrlY = ftY + ftH + 8;
+  doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
   doc.text('CONTROLADOR', cx, ctrlY);
-  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(...gold);
-  doc.text(ctrl, W-mx-5, ctrlY, {align:'right'});
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...gold);
+  doc.text(ctrl, W-mx-7, ctrlY, {align:'right'});
 }
+
+// ─── CLIPBOARD PASTE (Ctrl+V) ────────────────────────────────────────────────
+document.addEventListener('paste', function(e) {
+  const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+  for (const item of items) {
+    if (item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      if (file) {
+        loadFile(file);
+        document.getElementById('pasteHint').style.display = 'block';
+        setTimeout(() => { document.getElementById('pasteHint').style.display = 'none'; }, 3000);
+      }
+      break;
+    }
+  }
+});
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
 function hoy(){ return new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
@@ -866,6 +885,7 @@ function reset(){
   imgB64=null; imgMime=null; items=[]; ddm={}; remito={};
   document.getElementById('fileIn').value='';
   document.getElementById('previewImg').style.display='none';
+  document.getElementById('pasteHint').style.display='none';
   document.getElementById('resSection').classList.remove('on');
   document.getElementById('prevSection').classList.remove('on');
   document.getElementById('tblBody').innerHTML='';
