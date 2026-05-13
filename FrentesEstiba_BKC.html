@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v17</title>
+<title>Frentes de Estiba — BKCC v18</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -330,7 +330,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v11 Print A4 Full + Filtro DDM</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v18 — Modo Manual + Captura</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 4.0</span>
@@ -368,9 +368,18 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     <div class="alert info on" id="ctrlAlert">⚠ Seleccioná el controlador antes de continuar.</div>
   </div>
 
+  <!-- MODO SELECTOR -->
+  <div class="card" id="modeCard">
+    <div class="card-title"><span class="step">2</span> Modo de ingreso</div>
+    <div class="row" style="gap:10px;">
+      <button class="ctrl-btn active" id="btnModeImg" onclick="setMode('img')">📷 Desde captura (Chess ERP)</button>
+      <button class="ctrl-btn" id="btnModeManual" onclick="setMode('manual')">✏️ Ingreso manual</button>
+    </div>
+  </div>
+
   <!-- CAPTURA -->
-  <div class="card">
-    <div class="card-title"><span class="step">2</span> Captura del remito (Chess ERP)</div>
+  <div class="card" id="cardCaptura">
+    <div class="card-title"><span class="step">3a</span> Captura del remito (Chess ERP)</div>
     <div class="drop-zone" id="dropZone"
       ondragover="ev(event);this.classList.add('over')"
       ondragleave="this.classList.remove('over')"
@@ -389,10 +398,75 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     </div>
   </div>
 
+  <!-- INGRESO MANUAL -->
+  <div class="card" id="cardManual" style="display:none;">
+    <div class="card-title"><span class="step">3b</span> Ingreso manual de artículos</div>
+
+    <!-- Datos del remito -->
+    <div style="margin-bottom:18px;">
+      <div class="row" style="gap:12px;margin-bottom:12px;">
+        <div style="flex:1;">
+          <label class="inp-label">N° Remito (opcional)</label>
+          <input type="text" class="inp" id="mRemito" placeholder="ej: 3277-00056142">
+        </div>
+        <div style="flex:1;">
+          <label class="inp-label">Fecha de recepción</label>
+          <input type="date" class="inp" id="mFechaRecep">
+        </div>
+      </div>
+    </div>
+
+    <!-- Agregar artículo -->
+    <div style="background:var(--light);border:1.5px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">➕ Agregar artículo</div>
+      <div class="row" style="gap:10px;margin-bottom:10px;">
+        <div style="flex:0 0 140px;">
+          <label class="inp-label">Código</label>
+          <input type="text" class="inp" id="mCod" placeholder="ej: 30977" oninput="buscarDDM()" autocomplete="off">
+        </div>
+        <div style="flex:1;">
+          <label class="inp-label">Descripción (auto)</label>
+          <input type="text" class="inp" id="mDesc" placeholder="Se completa desde DDM...">
+        </div>
+      </div>
+      <div id="mDDMStatus" style="font-size:11px;margin-bottom:10px;display:none;"></div>
+      <div class="row" style="gap:10px;margin-bottom:10px;">
+        <div style="flex:1;">
+          <label class="inp-label">Fecha de vencimiento</label>
+          <input type="date" class="inp" id="mVenc" onkeydown="if(event.key==='Enter')document.getElementById('mBultos').focus()">
+        </div>
+        <div style="flex:0 0 140px;">
+          <label class="inp-label">Bultos totales</label>
+          <input type="number" class="inp" id="mBultos" placeholder="ej: 120" min="1" onkeydown="if(event.key==='Enter')agregarItem()">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-navy" onclick="agregarItem()">➕ Agregar a la lista</button>
+      </div>
+      <div class="alert" id="alertManual"></div>
+    </div>
+
+    <!-- Lista de artículos cargados -->
+    <div id="manualListWrap" style="display:none;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">📋 Artículos cargados</div>
+      <table class="tbl" id="manualTbl">
+        <thead><tr>
+          <th>Código</th><th>Descripción</th><th>Bultos</th><th>Bul/Pal</th><th>Frentes</th><th>Venc.</th><th></th>
+        </tr></thead>
+        <tbody id="manualTblBody"></tbody>
+      </table>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn btn-green" onclick="generarManual()">🖨️ Generar frentes</button>
+        <button class="btn btn-gold" onclick="limpiarManual()">🗑️ Limpiar lista</button>
+      </div>
+    </div>
+    <div class="loader" id="ldrManual"><div class="spin"></div><span id="ldrManualTxt">Cargando DDM...</span></div>
+  </div>
+
   <!-- RESULTADOS -->
   <div class="res" id="resSection">
     <div class="card">
-      <div class="card-title"><span class="step">3</span> Artículos detectados</div>
+      <div class="card-title"><span class="step">4</span> Artículos detectados</div>
       <div class="summary" id="sumGrid"></div>
       <table class="tbl">
         <thead><tr>
@@ -411,7 +485,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <!-- PREVIEW FRENTES -->
   <div class="res" id="prevSection">
     <div class="card">
-      <div class="card-title"><span class="step">4</span> Vista previa de frentes</div>
+      <div class="card-title"><span class="step">5</span> Vista previa de frentes</div>
       <div id="prevGrid" class="preview-grid"></div>
     </div>
   </div>
@@ -493,6 +567,196 @@ function loadFile(f) {
 }
 function checkBtn() {
   document.getElementById('btnProc').disabled = !(ctrl && imgB64 && getKey());
+}
+
+// ─── MODO MANUAL vs IMAGEN ────────────────────────────────────────────────────
+let modoActual = 'img';
+let manualItems = []; // lista de items cargados manualmente
+
+function setMode(m) {
+  modoActual = m;
+  document.getElementById('btnModeImg').classList.toggle('active', m==='img');
+  document.getElementById('btnModeManual').classList.toggle('active', m==='manual');
+  document.getElementById('cardCaptura').style.display  = m==='img'     ? '' : 'none';
+  document.getElementById('cardManual').style.display   = m==='manual'  ? '' : 'none';
+
+  if (m==='manual' && Object.keys(ddm).length===0) {
+    precargarDDMManual();
+  }
+}
+
+async function precargarDDMManual() {
+  const ldr = document.getElementById('ldrManual');
+  ldr.classList.add('on');
+  await cargarDDM();
+  ldr.classList.remove('on');
+}
+
+// Búsqueda automática en DDM mientras tipea el código
+let ddmBusqTimeout = null;
+function buscarDDM() {
+  clearTimeout(ddmBusqTimeout);
+  ddmBusqTimeout = setTimeout(() => {
+    const cod = document.getElementById('mCod').value.trim();
+    const st  = document.getElementById('mDDMStatus');
+    if (!cod) { st.style.display='none'; document.getElementById('mDesc').value=''; return; }
+
+    if (Object.keys(ddm).length===0) {
+      // DDM no cargado aún, cargar primero
+      precargarDDMManual().then(() => buscarDDM());
+      return;
+    }
+
+    const dKey = Object.keys(ddm).find(k => k === cod || k.toLowerCase()===cod.toLowerCase());
+    if (dKey) {
+      const d = ddm[dKey];
+      document.getElementById('mDesc').value = d.desc || '';
+      st.style.display = 'block';
+      st.style.color = '#166534';
+      st.textContent = '✅ Encontrado en DDM — ' + (d.bulPal ? d.bulPal + ' bultos/pallet' : 'sin bultos/pallet');
+    } else {
+      document.getElementById('mDesc').value = '';
+      st.style.display = 'block';
+      st.style.color = '#991b1b';
+      st.textContent = '⚠ Código no encontrado en DDM — podés ingresar la descripción manualmente';
+    }
+  }, 350);
+}
+
+function agregarItem() {
+  const cod    = document.getElementById('mCod').value.trim();
+  const desc   = document.getElementById('mDesc').value.trim();
+  const vencRaw= document.getElementById('mVenc').value; // YYYY-MM-DD
+  const bultos = parseInt(document.getElementById('mBultos').value) || 0;
+
+  clearAlert('alertManual');
+
+  if (!cod)    { showAlert('alertManual','err','⚠ Ingresá el código del artículo.'); return; }
+  if (!ctrl)   { showAlert('alertManual','err','⚠ Seleccioná el controlador primero (paso 1).'); return; }
+  if (bultos < 1) { showAlert('alertManual','err','⚠ Ingresá la cantidad de bultos.'); return; }
+
+  // Convertir fecha YYYY-MM-DD → DD/MM/YYYY
+  let venc = null;
+  if (vencRaw) {
+    const [y,m,d] = vencRaw.split('-');
+    venc = d+'/'+m+'/'+y;
+  }
+
+  // Buscar en DDM
+  const dKey = Object.keys(ddm).find(k => k === cod || k.toLowerCase()===cod.toLowerCase());
+  const d    = dKey ? ddm[dKey] : null;
+  const skip = SKU_SKIP.includes(cod);
+  const bulPal = d ? (d.bulPal || null) : null;
+  const nFrentes = skip ? 0 : (bulPal && bultos > 0 ? Math.ceil(bultos / bulPal) : 1);
+
+  let preBlq = null, blq = null;
+  if (venc) {
+    const [dd,mm,yyyy] = venc.split('/');
+    if (dd && mm && yyyy) {
+      const v = new Date(+yyyy, +mm-1, +dd);
+      preBlq = fmtDate(new Date(v.getTime() - 30*86400000));
+      blq    = fmtDate(new Date(v.getTime() - 10*86400000));
+    }
+  }
+
+  const item = {
+    cod,
+    desc: desc || (d ? d.desc : '') || cod,
+    bultos, bulPal, nFrentes,
+    venc,
+    preBlq, blq,
+    skip,
+    notInDDM: !d,
+    d: d || {}
+  };
+
+  manualItems.push(item);
+  renderManualList();
+
+  // Limpiar campos para el próximo artículo (mantener fecha recep)
+  document.getElementById('mCod').value = '';
+  document.getElementById('mDesc').value = '';
+  document.getElementById('mVenc').value = '';
+  document.getElementById('mBultos').value = '';
+  document.getElementById('mDDMStatus').style.display = 'none';
+  document.getElementById('mCod').focus();
+}
+
+function renderManualList() {
+  const wrap = document.getElementById('manualListWrap');
+  const tbody= document.getElementById('manualTblBody');
+  wrap.style.display = manualItems.length ? '' : 'none';
+
+  tbody.innerHTML = manualItems.map((it,i) => `
+    <tr>
+      <td><span class="cod">${it.cod}</span></td>
+      <td style="font-size:12px;font-weight:600">${it.desc}</td>
+      <td style="text-align:center;font-weight:700">${it.bultos}</td>
+      <td style="text-align:center;color:var(--gray)">${it.bulPal||'—'}</td>
+      <td style="text-align:center">${
+        it.skip
+          ? '<span class="bc-skip">Omitido</span>'
+          : '<span class="bc-ok">'+it.nFrentes+' frente'+(it.nFrentes!==1?'s':'')+'</span>'
+      }</td>
+      <td><span class="vd">${it.venc||'—'}</span></td>
+      <td><button onclick="quitarItemManual(${i})" style="background:none;border:none;cursor:pointer;color:#dc2626;font-size:16px;padding:2px 6px;" title="Quitar">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+function quitarItemManual(idx) {
+  manualItems.splice(idx,1);
+  renderManualList();
+}
+
+function limpiarManual() {
+  manualItems = [];
+  renderManualList();
+}
+
+function generarManual() {
+  if (!manualItems.length) { showAlert('alertManual','err','⚠ Agregá al menos un artículo.'); return; }
+  if (!ctrl)                { showAlert('alertManual','err','⚠ Seleccioná el controlador (paso 1).'); return; }
+
+  // Leer datos del remito manual
+  const remitoNum = document.getElementById('mRemito').value.trim() || 'MANUAL';
+  const fechaRecepRaw = document.getElementById('mFechaRecep').value; // YYYY-MM-DD
+  let fechaRecep = hoy();
+  if (fechaRecepRaw) {
+    const [y,m,d] = fechaRecepRaw.split('-');
+    fechaRecep = d+'/'+m+'/'+y;
+  }
+
+  remito = { num: remitoNum, prov: 'CMQ', fecha: fechaRecep, hora: '' };
+  items = manualItems.map(it => ({...it}));
+
+  // Mostrar resumen
+  const validos = items.filter(i=>!i.skip).length;
+  const totalFrentes = items.filter(i=>!i.skip).reduce((s,i)=>s+i.nFrentes,0);
+  document.getElementById('sumGrid').innerHTML = `
+    <div class="s-item"><div class="s-lbl">Remito</div><div class="s-val" style="font-size:15px">${remito.num}</div></div>
+    <div class="s-item"><div class="s-lbl">Fecha</div><div class="s-val" style="font-size:14px">${remito.fecha}</div></div>
+    <div class="s-item"><div class="s-lbl">Artículos</div><div class="s-val">${validos}</div></div>
+    <div class="s-item"><div class="s-lbl">Total frentes</div><div class="s-val">${totalFrentes}</div></div>
+  `;
+  document.getElementById('tblBody').innerHTML = items.map(it=>`
+    <tr>
+      <td><span class="cod">${it.cod}</span></td>
+      <td style="font-size:12px;font-weight:600">${it.desc}</td>
+      <td style="text-align:center;font-weight:700">${it.bultos}</td>
+      <td style="text-align:center;color:var(--gray)">${it.bulPal||'—'}</td>
+      <td style="text-align:center">${
+        it.skip
+          ? '<span class="bc-skip">Omitido</span>'
+          : '<span class="bc-ok">'+it.nFrentes+' frente'+(it.nFrentes!==1?'s':'')+'</span>'
+      }</td>
+      <td><span class="vd">${it.venc||'—'}</span></td>
+    </tr>
+  `).join('');
+  document.getElementById('resSection').classList.add('on');
+  renderPreview();
+  // Scroll a resultados
+  document.getElementById('resSection').scrollIntoView({behavior:'smooth'});
 }
 
 // ─── CARGAR DDM (Google Sheets CSV público) ────────────────────────────────────
@@ -1026,6 +1290,7 @@ function showAlert(id,type,msg){ const e=document.getElementById(id); e.classNam
 function clearAlert(id){ const e=document.getElementById(id); e.className='alert'; e.textContent=''; }
 function reset(){
   imgB64=null; imgMime=null; items=[]; ddm={}; remito={};
+  manualItems=[];
   document.getElementById('fileIn').value='';
   document.getElementById('previewImg').style.display='none';
   document.getElementById('pasteHint').style.display='none';
@@ -1033,10 +1298,23 @@ function reset(){
   document.getElementById('prevSection').classList.remove('on');
   document.getElementById('tblBody').innerHTML='';
   document.getElementById('prevGrid').innerHTML='';
+  document.getElementById('manualTblBody').innerHTML='';
+  document.getElementById('manualListWrap').style.display='none';
+  document.getElementById('mRemito').value='';
+  document.getElementById('mFechaRecep').value='';
+  document.getElementById('mCod').value='';
+  document.getElementById('mDesc').value='';
+  document.getElementById('mVenc').value='';
+  document.getElementById('mBultos').value='';
+  document.getElementById('mDDMStatus').style.display='none';
   clearAlert('alertMain');
+  clearAlert('alertManual');
   checkBtn();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
 </body>
 </html>
+
+
+
