@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v14</title>
+<title>Frentes de Estiba — BKCC v15</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -117,8 +117,8 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-top{display:flex;justify-content:space-between;align-items:flex-start;}
 .fe-code-area{}
 .fe-cod-lbl{font-size:9px;font-weight:700;color:#AAA;text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:2px;}
-.fe-cod{font-size:64px;font-weight:700;color:var(--navy);line-height:1;font-family:'Oswald',sans-serif;letter-spacing:0px;}
-.fe-prod{font-size:34px;font-weight:700;color:#222;text-transform:uppercase;line-height:1.15;margin-top:6px;letter-spacing:.3px;max-width:200px;font-family:'Barlow Condensed',sans-serif;word-break:break-word;}
+.fe-cod{font-size:34px;font-weight:700;color:var(--navy);line-height:1;font-family:'Barlow Condensed',sans-serif;letter-spacing:0px;}
+.fe-prod{font-size:34px;font-weight:700;color:#222;text-transform:uppercase;line-height:1.15;margin-top:4px;letter-spacing:.3px;max-width:200px;font-family:'Barlow Condensed',sans-serif;word-break:break-word;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
 .fe-qr{flex-shrink:0;}
 .fe-qr canvas,.fe-qr img{width:110px!important;height:110px!important;border-radius:6px;border:1px solid var(--border);}
 
@@ -260,10 +260,10 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     justify-content: space-between !important;
   }
 
-  /* Código + descripción GRANDES para lectura a distancia */
+  /* Código + descripción mismo tamaño */
   .fe-cod-lbl   { font-size: 16px !important; letter-spacing: 1.5px !important; }
-  .fe-cod       { font-size: 140px !important; line-height: 1 !important; font-weight: 900 !important; }
-  .fe-prod      { font-size: 70px !important; line-height: 1.05 !important; font-weight: 700 !important; max-width: 420px !important; }
+  .fe-cod       { font-size: 72px !important; line-height: 1 !important; font-weight: 700 !important; font-family: 'Barlow Condensed', sans-serif !important; }
+  .fe-prod      { font-size: 72px !important; line-height: 1.05 !important; font-weight: 700 !important; max-width: 420px !important; -webkit-line-clamp: 2 !important; }
 
   /* QR más grande */
   .fe-qr canvas,
@@ -801,20 +801,20 @@ function renderPreview() {
             </div>
           </div>
 
-          <!-- Grid 3×3 datos (RECEPCIÓN en la celda vacía) -->
+          <!-- Grid 3×3 datos -->
           <div class="fe-grid">
             ${cell('BULTOS / PALLET', it.bulPal||'—')}
             ${cell('APILABILIDAD', it.d.apil||'—')}
-            ${cell('KG / BULTO', it.d.peso||'—')}
+            ${cell('CANCHA', it.d.cancha||'—')}
             ${cell('PRE-BLOQUEO', it.preBlq||'—')}
             ${cell('BLOQUEO', it.blq||'—')}
+            ${cell('ALMACÉN', it.d.almacen||'—')}
+            ${cell('KG / BULTO', it.d.peso||'—')}
             ${cell('HL / BULTO', it.d.hl||'—')}
             ${cell('RECEPCIÓN', remito.fecha||'—')}
-            ${cell('—', '—')}
-            ${cell('—', '—')}
           </div>
 
-          <!-- Footer: ABC (claro) + CANCHA (negro) -->
+          <!-- Footer: ABC (claro) + PALLET (negro) -->
           <div class="fe-sep"></div>
           <div class="fe-foot">
             <div class="fe-abc-block">
@@ -822,8 +822,8 @@ function renderPreview() {
               <span class="fe-abc-val">${it.d.abc||'—'}</span>
             </div>
             <div class="fe-pallet-block">
-              <span class="fe-pallet-lbl">CANCHA</span>
-              <span class="fe-pnum">${it.d.cancha||'—'}</span>
+              <span class="fe-pallet-lbl">PALLET</span>
+              <span class="fe-pnum">${p} / ${it.nFrentes}</span>
             </div>
           </div>
 
@@ -944,13 +944,13 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const cells = [
     ['BULTOS / PALLET', it.bulPal||'—'],
     ['APILABILIDAD',    it.d.apil||'—'],
-    ['KG / BULTO',      it.d.peso||'—'],
+    ['CANCHA',          it.d.cancha||'—'],
     ['PRE-BLOQUEO',     it.preBlq||'—'],
     ['BLOQUEO',         it.blq||'—'],
+    ['ALMACÉN',         it.d.almacen||'—'],
+    ['KG / BULTO',      it.d.peso||'—'],
     ['HL / BULTO',      it.d.hl||'—'],
     ['RECEPCIÓN',       remito.fecha||'—'],
-    ['—',               '—'],
-    ['—',               '—'],
   ];
   const colW = (cw - 6) / 3;
   const rowH = 18;
@@ -984,14 +984,14 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   doc.setFontSize(20); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
   doc.text(it.d.abc||'—', cx+5, ftY+19);
 
-  // CANCHA block (derecho negro)
+  // PALLET block (derecho negro)
   const palX = cx + halfW + 4;
   doc.setFillColor(...navy);
   doc.roundedRect(palX, ftY, halfW, ftH, 2, 2, 'F');
   doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text('CANCHA', palX+5, ftY+7);
-  doc.setFontSize(16); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text(String(it.d.cancha||'—'), palX+5, ftY+19);
+  doc.text('PALLET', palX+5, ftY+7);
+  doc.setFontSize(22); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text(`${palletNum} / ${it.nFrentes}`, palX+5, ftY+19);
 
   // ── CONTROLADOR ROW ──
   const ctrlY = ftY + ftH + 8;
