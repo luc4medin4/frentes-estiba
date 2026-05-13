@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v19</title>
+<title>Frentes de Estiba — BKCC v20</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -331,7 +331,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v19 — Captura + Manual + Excel</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v20 — Captura + Manual + Excel</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 4.0</span>
@@ -1255,6 +1255,9 @@ function generateQRCanvas(text, size) {
     } catch(e) { document.body.removeChild(el); resolve(null); return; }
     setTimeout(() => {
       const canvas = el.querySelector('canvas');
+      // QRCode.js a veces genera también un <img> — lo removemos para evitar duplicados visuales
+      const imgs = el.querySelectorAll('img');
+      imgs.forEach(i => i.remove());
       document.body.removeChild(el);
       resolve(canvas || null);
     }, 80);
@@ -1354,11 +1357,14 @@ function renderPreview() {
         </div>`;
       grid.appendChild(div);
 
-      // Inject QR asynchronously
+      // Inject QR asynchronously — limpiar contenedor antes de insertar para evitar duplicados
       (async (elId, text) => {
         const canvas = await generateQRCanvas(text, 110);
         const container = document.getElementById(elId);
-        if (container && canvas) container.appendChild(canvas);
+        if (container && canvas) {
+          container.innerHTML = ''; // eliminar cualquier canvas/img previo
+          container.appendChild(canvas);
+        }
       })(qrId, makeQRText(it, p));
     }
   }
