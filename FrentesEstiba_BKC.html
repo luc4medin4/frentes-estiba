@@ -808,7 +808,7 @@ function limpiarExcel() {
   clearAlert('alertExcel');
 }
 
-function generarDesdeExcel() {
+async function generarDesdeExcel() {
   if (!excelItems.length) return;
   if (!ctrl) { showAlert('alertExcel','err','⚠ Seleccioná el controlador (paso 1).'); return; }
 
@@ -835,9 +835,8 @@ function generarDesdeExcel() {
   `).join('');
 
   document.getElementById('resSection').classList.add('on');
-  renderPreview().then(() => {
-    document.getElementById('resSection').scrollIntoView({behavior:'smooth'});
-  });
+  await renderPreview();
+  document.getElementById('resSection').scrollIntoView({behavior:'smooth'});
 }
 
 async function precargarDDMManual() {
@@ -1390,12 +1389,18 @@ async function imprimirDirecto() {
     return;
   }
 
-  // Esperar a que todos los QR estén renderizados en el DOM
   btn.disabled = true;
-  btn.textContent = '⏳ Preparando...';
+  btn.textContent = '⏳ Preparando impresión...';
 
-  // Pequeña pausa para asegurar que los QR canvas ya están en el DOM
-  await new Promise(r => setTimeout(r, 400));
+  // Si el grid está vacío (ej: se acaba de generar desde Excel y aún no renderizó),
+  // forzar el renderizado y esperar a que termine.
+  const grid = document.getElementById('prevGrid');
+  if (!grid || !grid.children.length) {
+    await renderPreview();
+  }
+
+  // Pequeña pausa extra para que el browser pinte los <img> de QR
+  await new Promise(r => setTimeout(r, 300));
 
   btn.disabled = false;
   btn.textContent = '🖨️ Imprimir Frentes';
