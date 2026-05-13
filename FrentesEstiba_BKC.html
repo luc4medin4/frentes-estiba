@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v7</title>
+<title>Frentes de Estiba — BKCC v10</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -160,28 +160,116 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 
 /* ── PRINT STYLES: A4 portrait vertical ── */
 @media print {
-  @page { size: A4 portrait; margin: 8mm; }
-  body { background: #fff !important; }
-  .header, .container > .card:not(.print-card) { display: none !important; }
-  #resSection, #prevSection { display: block !important; }
-  .card { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; background: transparent !important; }
-  .card-title { display: none !important; }
-  .preview-grid { display: block !important; margin: 0 !important; }
+  @page { size: A4 portrait; margin: 6mm; }
+
+  /* CRÍTICO: forzar impresión de fondos de color */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  html, body {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Ocultar todo excepto la vista previa */
+  .header { display: none !important; }
+  .container { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+  .container > .card { display: none !important; }
+  #resSection { display: none !important; }
+
+  #prevSection {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  #prevSection .card {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+  #prevSection .card-title { display: none !important; }
+
+  .preview-grid {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  /* Tarjeta: ocupa toda la página */
   .fe {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     border: 1.5px solid #DDD9CE !important;
-    border-radius: 12px !important;
-    page-break-after: always !important;
-    break-after: page !important;
-    width: 190mm !important;
-    max-width: 190mm !important;
-    margin: 0 auto !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
     display: flex !important;
     flex-direction: column !important;
-    box-shadow: none !important;
+    overflow: hidden !important;
+    background: #FFFFFF !important;
+    box-sizing: border-box !important;
+    page-break-after: always !important;
+    break-after: page !important;
   }
-  .fe:last-child { page-break-after: avoid !important; break-after: avoid !important; }
+  .fe:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Forzar colores de fondo de cada sección */
+  .fe-hdr {
+    background: #1A1A1A !important;
+    color: #fff !important;
+  }
+  .fe-hdr-brand { color: #c9a227 !important; }
+  .fe-hdr-title { color: #fff !important; }
+  .fe-hdr-tag   { color: #c9a227 !important; }
+
+  .fe-venc-row {
+    background: #F0C040 !important;
+  }
+  .fe-vlbl    { color: #7A5E00 !important; }
+  .fe-recep-lbl { color: #7A5E00 !important; }
+  .fe-vfecha  { color: #1A1A1A !important; }
+  .fe-recep-val { color: #1A1A1A !important; }
+
+  .fe-cell {
+    background: #F5F4F0 !important;
+    border: 1px solid #E8E5DE !important;
+  }
+  .fe-cell .lbl { color: #AAAAAA !important; }
+  .fe-cell .val { color: #1A1A1A !important; }
+
+  .fe-abc-block {
+    background: #F5F4F0 !important;
+    border: 1px solid #E8E5DE !important;
+  }
+  .fe-abc-lbl { color: #AAAAAA !important; }
+  .fe-abc-val { color: #1A1A1A !important; }
+
+  .fe-pallet-block {
+    background: #1A1A1A !important;
+  }
+  .fe-pallet-lbl { color: #F0C040 !important; }
+  .fe-pnum       { color: #F0C040 !important; }
+
+  .fe-ctrl-lbl { color: #AAAAAA !important; }
+  .fe-ctrl-val { color: #c9a227 !important; }
+
+  /* QR canvas visible en impresión */
+  .fe-qr canvas, .fe-qr img {
+    display: block !important;
+    width: 64px !important;
+    height: 64px !important;
+  }
 }
 
 
@@ -193,7 +281,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v8 Modo Vertical A4</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v10 Impresión Directa</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 4.0</span>
@@ -265,7 +353,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
         <tbody id="tblBody"></tbody>
       </table>
       <div class="btn-row">
-        <button class="btn btn-green" id="btnPDF" onclick="generarPDF()">🖨️ Generar PDF e Imprimir</button>
+        <button class="btn btn-green" id="btnPDF" onclick="imprimirDirecto()">🖨️ Imprimir Frentes</button>
         <button class="btn btn-gold" onclick="reset()">↺ Nuevo remito</button>
       </div>
     </div>
@@ -674,51 +762,25 @@ function renderPreview() {
 }
 function cell(lbl,val){ return `<div class="fe-cell"><span class="lbl">${lbl}</span><span class="val">${val}</span></div>`; }
 
-// ─── GENERAR PDF ──────────────────────────────────────────────────────────────
-async function generarPDF() {
+// ─── IMPRIMIR DIRECTO (window.print = idéntico a la vista previa) ─────────────
+async function imprimirDirecto() {
   const btn = document.getElementById('btnPDF');
-  btn.disabled = true;
-  btn.textContent = '⏳ Generando...';
-
-  try {
-    const { jsPDF } = window.jspdf;
-    const W=210, H=297;
-    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-
-    // Pre-generate all QR codes
-    const fList = await generateAllQRs();
-
-    if (!fList.length) {
-      showAlert('alertMain','err','No hay frentes para generar.');
-      btn.disabled = false;
-      btn.textContent = '🖨️ Generar PDF e Imprimir';
-      return;
-    }
-
-    for (let i = 0; i < fList.length; i++) {
-      if (i > 0) doc.addPage();
-      drawFrente(doc, fList[i].it, fList[i].p, W, H, fList[i].qrUrl);
-    }
-
-    // Auto-print: open PDF in new window and trigger print
-    doc.autoPrint();
-    const fname = `Frentes_REM${remito.num}_${remito.fecha.replace(/\//g,'-')}_${ctrl.replace(' ','')}.pdf`;
-    const blob = doc.output('blob');
-    const blobUrl = URL.createObjectURL(blob);
-    const newWin = window.open(blobUrl, '_blank');
-    if (!newWin) {
-      // Fallback: direct download if popup blocked
-      doc.save(fname);
-      showAlert('alertMain','ok',`✅ PDF descargado: ${fList.length} frente${fList.length!==1?'s':''} · Permitir popups para auto-imprimir.`);
-    } else {
-      showAlert('alertMain','ok',`✅ PDF generado: ${fList.length} frente${fList.length!==1?'s':''}. El diálogo de impresión se abre automáticamente.`);
-    }
-  } catch(err) {
-    showAlert('alertMain','err','❌ Error generando PDF: ' + err.message);
+  if (!items.length) {
+    showAlert('alertMain','err','No hay frentes para imprimir.');
+    return;
   }
 
+  // Esperar a que todos los QR estén renderizados en el DOM
+  btn.disabled = true;
+  btn.textContent = '⏳ Preparando...';
+
+  // Pequeña pausa para asegurar que los QR canvas ya están en el DOM
+  await new Promise(r => setTimeout(r, 400));
+
   btn.disabled = false;
-  btn.textContent = '🖨️ Generar PDF e Imprimir';
+  btn.textContent = '🖨️ Imprimir Frentes';
+
+  window.print();
 }
 
 // ─── DRAW FRENTE (jsPDF) — MODO VERTICAL A4 PORTRAIT ──────────────────────────
