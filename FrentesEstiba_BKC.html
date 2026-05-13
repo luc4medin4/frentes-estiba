@@ -118,9 +118,9 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .fe-code-area{}
 .fe-cod-lbl{font-size:9px;font-weight:700;color:#AAA;text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:2px;}
 .fe-cod{font-size:38px;font-weight:500;color:var(--navy);line-height:1;font-family:'Oswald',sans-serif;letter-spacing:0px;}
-.fe-prod{font-size:16px;font-weight:600;color:#222;text-transform:uppercase;line-height:1.3;margin-top:6px;letter-spacing:.3px;max-width:220px;font-family:'Barlow Condensed',sans-serif;}
+.fe-prod{font-size:20px;font-weight:600;color:#222;text-transform:uppercase;line-height:1.3;margin-top:6px;letter-spacing:.3px;max-width:220px;font-family:'Barlow Condensed',sans-serif;}
 .fe-qr{flex-shrink:0;}
-.fe-qr canvas,.fe-qr img{width:64px!important;height:64px!important;border-radius:6px;border:1px solid var(--border);}
+.fe-qr canvas,.fe-qr img{width:110px!important;height:110px!important;border-radius:6px;border:1px solid var(--border);}
 
 /* Vencimiento — bloque amarillo full width */
 .fe-venc-row{background:var(--yellow);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;}
@@ -158,9 +158,9 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 /* hidden QR helper */
 #qr-hidden{position:fixed;left:-9999px;top:-9999px;}
 
-/* ── PRINT STYLES: A4 portrait vertical ── */
+/* ── PRINT STYLES ── */
 @media print {
-  @page { size: A4 portrait; margin: 6mm; }
+  @page { size: A4 portrait; margin: 10mm; }
 
   /* CRÍTICO: forzar impresión de fondos de color */
   * {
@@ -175,7 +175,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     padding: 0 !important;
   }
 
-  /* Ocultar todo excepto la vista previa */
+  /* Ocultar todo excepto vista previa */
   .header { display: none !important; }
   .container { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
   .container > .card { display: none !important; }
@@ -202,13 +202,13 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     gap: 0 !important;
   }
 
-  /* Tarjeta: ocupa TODA la página A4 (297mm - 6mm top - 6mm bottom = 285mm) */
+  /* Tarjeta: ancho total, altura por contenido — igual al preview */
   .fe {
     width: 100% !important;
     max-width: 100% !important;
-    height: 285mm !important;
-    min-height: 285mm !important;
-    margin: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 0 0 0 !important;
     padding: 0 !important;
     border: 1.5px solid #DDD9CE !important;
     border-radius: 10px !important;
@@ -225,73 +225,57 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     page-break-after: avoid !important;
     break-after: avoid !important;
   }
-  /* El body de la tarjeta crece para llenar el espacio restante */
+
+  /* Body y Grid: NO estirar — respetar altura de contenido */
   .fe-body {
-    flex: 1 !important;
+    flex: none !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    gap: 12px !important;
+    padding: 16px 18px !important;
   }
-  /* La grilla de datos ocupa más espacio disponible */
   .fe-grid {
-    flex: 1 !important;
+    flex: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(3,1fr) !important;
+    gap: 5px !important;
   }
-
-  /* Forzar colores de fondo de cada sección */
-  .fe-hdr {
-    background: #1A1A1A !important;
-    color: #fff !important;
-  }
-  .fe-hdr-brand { color: #c9a227 !important; }
-  .fe-hdr-title { color: #fff !important; }
-  .fe-hdr-tag   { color: #c9a227 !important; }
-
-  .fe-venc-row {
-    background: #F0C040 !important;
-  }
-  .fe-vlbl    { color: #7A5E00 !important; }
-  .fe-recep-lbl { color: #7A5E00 !important; }
-  .fe-vfecha  { color: #1A1A1A !important; }
-  .fe-recep-val { color: #1A1A1A !important; }
-
   .fe-cell {
     background: #F5F4F0 !important;
     border: 1px solid #E8E5DE !important;
+    border-radius: 7px !important;
+    padding: 7px 9px !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
+
+  /* Colores forzados */
+  .fe-hdr { background: #1A1A1A !important; color: #fff !important; }
+  .fe-hdr-brand { color: #c9a227 !important; }
+  .fe-hdr-title { color: #fff !important; }
+  .fe-hdr-tag   { color: #c9a227 !important; }
+  .fe-venc-row  { background: #F0C040 !important; }
+  .fe-vlbl      { color: #7A5E00 !important; }
+  .fe-recep-lbl { color: #7A5E00 !important; }
+  .fe-vfecha    { color: #1A1A1A !important; }
+  .fe-recep-val { color: #1A1A1A !important; }
   .fe-cell .lbl { color: #AAAAAA !important; }
   .fe-cell .val { color: #1A1A1A !important; }
+  .fe-abc-block { background: #F5F4F0 !important; border: 1px solid #E8E5DE !important; }
+  .fe-abc-lbl   { color: #AAAAAA !important; }
+  .fe-abc-val   { color: #1A1A1A !important; }
+  .fe-pallet-block { background: #1A1A1A !important; }
+  .fe-pallet-lbl   { color: #F0C040 !important; }
+  .fe-pnum         { color: #F0C040 !important; }
+  .fe-ctrl-lbl  { color: #AAAAAA !important; }
+  .fe-ctrl-val  { color: #c9a227 !important; }
 
-  .fe-abc-block {
-    background: #F5F4F0 !important;
-    border: 1px solid #E8E5DE !important;
-  }
-  .fe-abc-lbl { color: #AAAAAA !important; }
-  .fe-abc-val { color: #1A1A1A !important; }
-
-  .fe-pallet-block {
-    background: #1A1A1A !important;
-  }
-  .fe-pallet-lbl { color: #F0C040 !important; }
-  .fe-pnum       { color: #F0C040 !important; }
-
-  .fe-ctrl-lbl { color: #AAAAAA !important; }
-  .fe-ctrl-val { color: #c9a227 !important; }
-
-  /* Escalar fuentes para llenar la página — igualar a la vista previa */
-  .fe-cod      { font-size: 52pt !important; }
-  .fe-prod     { font-size: 18pt !important; max-width: none !important; }
-  .fe-vfecha   { font-size: 72pt !important; }
-  .fe-recep-val{ font-size: 15pt !important; }
-  .fe-cell .val{ font-size: 14pt !important; }
-  .fe-abc-val  { font-size: 26pt !important; }
-  .fe-pnum     { font-size: 28pt !important; }
-  .fe-ctrl-val { font-size: 13pt !important; color: #c9a227 !important; }
-
-  /* QR canvas visible en impresión */
+  /* QR visible en impresión */
   .fe-qr canvas, .fe-qr img {
     display: block !important;
-    width: 64px !important;
-    height: 64px !important;
+    width: 110px !important;
+    height: 110px !important;
+    border-radius: 6px !important;
   }
 }
 
@@ -304,7 +288,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v10.1 Impresión Directa</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v10.2 QR Grande + Print Fiel</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 4.0</span>
@@ -775,7 +759,7 @@ function renderPreview() {
 
       // Inject QR asynchronously
       (async (elId, text) => {
-        const canvas = await generateQRCanvas(text, 64);
+        const canvas = await generateQRCanvas(text, 110);
         const container = document.getElementById(elId);
         if (container && canvas) container.appendChild(canvas);
       })(qrId, makeQRText(it, p));
