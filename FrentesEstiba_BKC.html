@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v18</title>
+<title>Frentes de Estiba — BKCC v19</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&family=Oswald:wght@300;400;500;700&display=swap');
 :root{--navy:#1A1A1A;--gold:#c9a227;--yellow:#FAEA8A;--white:#fff;--light:#F5F4F0;--gray:#8a9ab5;--border:#DDD9CE;--green:#2e9e6b;--cream:#FAFAF7;}
@@ -330,7 +331,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v18 — Modo Manual + Captura</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v19 — Captura + Manual + Excel</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 4.0</span>
@@ -374,6 +375,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     <div class="row" style="gap:10px;">
       <button class="ctrl-btn active" id="btnModeImg" onclick="setMode('img')">📷 Desde captura (Chess ERP)</button>
       <button class="ctrl-btn" id="btnModeManual" onclick="setMode('manual')">✏️ Ingreso manual</button>
+      <button class="ctrl-btn" id="btnModeExcel" onclick="setMode('excel')">📊 Desde Excel (Frescura)</button>
     </div>
   </div>
 
@@ -461,6 +463,48 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
       </div>
     </div>
     <div class="loader" id="ldrManual"><div class="spin"></div><span id="ldrManualTxt">Cargando DDM...</span></div>
+  </div>
+
+  <!-- EXCEL FRESCURA -->
+  <div class="card" id="cardExcel" style="display:none;">
+    <div class="card-title"><span class="step">3c</span> Excel de Frescura — Reemplazo masivo de frentes</div>
+
+    <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:12px 16px;margin-bottom:18px;font-size:12px;color:#92400e;">
+      ⚠ <strong>Modo masivo:</strong> genera frentes para TODOS los SKUs con stock > 0 en almacenes ≠ 0. Usar solo para reemplazo completo de frentes.
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <label class="inp-label">Archivo Excel (Frescura — hoja Hoja1)</label>
+      <div class="drop-zone" id="dropZoneExcel" style="padding:24px 20px;"
+        ondragover="ev(event);this.classList.add('over')"
+        ondragleave="this.classList.remove('over')"
+        ondrop="dropExcel(event)">
+        <input type="file" id="fileExcel" accept=".xlsx,.xls" onchange="fileExcelChg(event)">
+        <span>📊</span>
+        <p><strong>Arrastrá o hacé clic</strong></p>
+        <p style="font-size:11px;margin-top:3px;">Archivo .xlsx exportado de Chess ERP (Frescura)</p>
+      </div>
+      <div id="excelFileName" style="margin-top:8px;font-size:12px;color:var(--green);font-weight:600;display:none;"></div>
+    </div>
+
+    <div class="loader" id="ldrExcel"><div class="spin"></div><span id="ldrExcelTxt">Procesando...</span></div>
+    <div class="alert" id="alertExcel"></div>
+
+    <!-- Preview tabla antes de generar -->
+    <div id="excelPreviewWrap" style="display:none;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">📋 Filas a generar</div>
+      <div class="summary" id="excelSumGrid"></div>
+      <table class="tbl" style="margin-bottom:14px;">
+        <thead><tr>
+          <th>Alm</th><th>Código</th><th>Descripción</th><th>Bultos</th><th>Bul/Pal</th><th>Frentes</th><th>Venc.</th>
+        </tr></thead>
+        <tbody id="excelTblBody"></tbody>
+      </table>
+      <div class="btn-row">
+        <button class="btn btn-green" onclick="generarDesdeExcel()">🖨️ Generar todos los frentes</button>
+        <button class="btn btn-gold" onclick="limpiarExcel()">↺ Cargar otro archivo</button>
+      </div>
+    </div>
   </div>
 
   <!-- RESULTADOS -->
@@ -577,12 +621,222 @@ function setMode(m) {
   modoActual = m;
   document.getElementById('btnModeImg').classList.toggle('active', m==='img');
   document.getElementById('btnModeManual').classList.toggle('active', m==='manual');
-  document.getElementById('cardCaptura').style.display  = m==='img'     ? '' : 'none';
-  document.getElementById('cardManual').style.display   = m==='manual'  ? '' : 'none';
+  document.getElementById('btnModeExcel').classList.toggle('active', m==='excel');
+  document.getElementById('cardCaptura').style.display = m==='img'    ? '' : 'none';
+  document.getElementById('cardManual').style.display  = m==='manual' ? '' : 'none';
+  document.getElementById('cardExcel').style.display   = m==='excel'  ? '' : 'none';
 
-  if (m==='manual' && Object.keys(ddm).length===0) {
+  if ((m==='manual' || m==='excel') && Object.keys(ddm).length===0) {
     precargarDDMManual();
   }
+}
+
+// ─── EXCEL FRESCURA ──────────────────────────────────────────────────────────
+let excelItems = []; // items parsed from excel
+
+function dropExcel(e) {
+  e.preventDefault();
+  document.getElementById('dropZoneExcel').classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f) processExcelFile(f);
+}
+function fileExcelChg(e) {
+  if (e.target.files[0]) processExcelFile(e.target.files[0]);
+}
+
+async function processExcelFile(f) {
+  clearAlert('alertExcel');
+  document.getElementById('excelPreviewWrap').style.display = 'none';
+  const ldr = document.getElementById('ldrExcel');
+  ldr.classList.add('on');
+  document.getElementById('ldrExcelTxt').textContent = 'Leyendo Excel...';
+
+  try {
+    // Make sure DDM is loaded
+    if (Object.keys(ddm).length === 0) {
+      document.getElementById('ldrExcelTxt').textContent = 'Cargando DDM...';
+      await cargarDDM();
+    }
+
+    document.getElementById('ldrExcelTxt').textContent = 'Procesando filas...';
+
+    const buf = await f.arrayBuffer();
+    const wb  = XLSX.read(buf, { type: 'array', cellDates: true });
+    const ws  = wb.Sheets['Hoja1'] || wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
+
+    // Find header row (row index with 'Almacén' in col 0)
+    let headerIdx = -1;
+    for (let i = 0; i < Math.min(rows.length, 5); i++) {
+      if (rows[i] && String(rows[i][0]||'').toLowerCase().includes('alm')) {
+        headerIdx = i; break;
+      }
+    }
+    if (headerIdx === -1) throw new Error('No encontré la fila de encabezados. ¿Es el archivo correcto?');
+
+    // Col indices: 0=Almacén, 1=Orden, 2=Artículo, 3=Descripción, 4=fecvtolote, 5=pallets(skip), 6=Bultos, 7=Unids(skip)
+    const dataRows = rows.slice(headerIdx + 1);
+    excelItems = [];
+
+    for (const r of dataRows) {
+      if (!r || r.length < 7) continue;
+      const alm    = r[0];
+      const cod    = r[2];
+      const desc   = r[3];
+      const fechaRaw = r[4];
+      const bultos = r[6];
+
+      // Filtros: almacen != 0, bultos > 0, cod válido
+      if (!alm || alm === 0) continue;
+      if (!cod || isNaN(Number(cod))) continue;
+      if (!bultos || typeof bultos !== 'number' || bultos <= 0) continue;
+
+      // Formatear fecha
+      let venc = null;
+      if (fechaRaw instanceof Date && !isNaN(fechaRaw)) {
+        const dd = String(fechaRaw.getDate()).padStart(2,'0');
+        const mm = String(fechaRaw.getMonth()+1).padStart(2,'0');
+        const yyyy = fechaRaw.getFullYear();
+        venc = dd+'/'+mm+'/'+yyyy;
+      } else if (typeof fechaRaw === 'string' && fechaRaw.trim().length > 4) {
+        // Try parse DD/MM/YYYY or similar
+        const clean = fechaRaw.trim();
+        // YYYY-MM-DD
+        const m1 = clean.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (m1) venc = m1[3]+'/'+m1[2]+'/'+m1[1];
+      } else if (typeof fechaRaw === 'number') {
+        // Excel serial date
+        const d = XLSX.SSF.parse_date_code(fechaRaw);
+        if (d) {
+          const dd = String(d.d).padStart(2,'0');
+          const mm = String(d.m).padStart(2,'0');
+          venc = dd+'/'+mm+'/'+d.y;
+        }
+      }
+
+      const codStr = String(cod).trim();
+      const skip   = SKU_SKIP.includes(codStr);
+      const dKey   = Object.keys(ddm).find(k => k === codStr || k.toLowerCase()===codStr.toLowerCase());
+      const d      = dKey ? ddm[dKey] : null;
+      const bulPal = d ? (d.bulPal || null) : null;
+      const nFrentes = skip ? 0 : (bulPal && bultos > 0 ? Math.ceil(bultos / bulPal) : 1);
+
+      let preBlq = null, blq = null;
+      if (venc) {
+        const parts = venc.split('/');
+        if (parts.length === 3) {
+          const [dv,mv,yv] = parts;
+          const vd = new Date(+yv, +mv-1, +dv);
+          preBlq = fmtDate(new Date(vd.getTime() - 30*86400000));
+          blq    = fmtDate(new Date(vd.getTime() - 10*86400000));
+        }
+      }
+
+      excelItems.push({
+        alm: Number(alm),
+        cod: codStr,
+        desc: (desc||'').toString().substring(0,50),
+        bultos: Math.round(bultos),
+        bulPal, nFrentes,
+        venc, preBlq, blq,
+        skip,
+        notInDDM: !d,
+        d: d || {}
+      });
+    }
+
+    ldr.classList.remove('on');
+
+    if (!excelItems.length) {
+      showAlert('alertExcel','err','⚠ No se encontraron filas válidas (almacén ≠ 0, bultos > 0).');
+      return;
+    }
+
+    // Show filename
+    const fn = document.getElementById('excelFileName');
+    fn.style.display = 'block';
+    fn.textContent = '✅ ' + f.name + ' — ' + excelItems.length + ' filas válidas';
+
+    renderExcelPreview();
+
+  } catch(err) {
+    document.getElementById('ldrExcel').classList.remove('on');
+    showAlert('alertExcel','err','❌ ' + err.message);
+  }
+}
+
+function renderExcelPreview() {
+  const validos = excelItems.filter(i=>!i.skip).length;
+  const totalF  = excelItems.filter(i=>!i.skip).reduce((s,i)=>s+i.nFrentes,0);
+  const alms    = [...new Set(excelItems.map(i=>i.alm))].sort((a,b)=>a-b);
+  const sinDDM  = excelItems.filter(i=>i.notInDDM && !i.skip).length;
+
+  document.getElementById('excelSumGrid').innerHTML = `
+    <div class="s-item"><div class="s-lbl">Filas Excel</div><div class="s-val">${excelItems.length}</div></div>
+    <div class="s-item"><div class="s-lbl">SKUs válidos</div><div class="s-val">${validos}</div></div>
+    <div class="s-item"><div class="s-lbl">Total frentes</div><div class="s-val">${totalF}</div></div>
+    <div class="s-item"><div class="s-lbl">Almacenes</div><div class="s-val" style="font-size:13px">${alms.join(', ')}</div></div>
+    ${sinDDM ? '<div class="s-item"><div class="s-lbl">Sin DDM</div><div class="s-val" style="color:#92400e;font-size:16px">'+sinDDM+'</div></div>' : ''}
+  `;
+
+  document.getElementById('excelTblBody').innerHTML = excelItems.map(it=>`
+    <tr>
+      <td style="text-align:center;font-weight:700">${it.alm}</td>
+      <td><span class="cod">${it.cod}</span></td>
+      <td style="font-size:11px;font-weight:600">${it.desc}</td>
+      <td style="text-align:center">${it.bultos}</td>
+      <td style="text-align:center;color:var(--gray)">${it.bulPal||'—'}</td>
+      <td style="text-align:center">${
+        it.skip
+          ? '<span class="bc-skip">Omitido</span>'
+          : it.notInDDM
+            ? '<span class="bc-skip" style="background:#fef3c7;color:#92400e;">Sin DDM → 1 frente</span>'
+            : '<span class="bc-ok">'+it.nFrentes+' frente'+(it.nFrentes!==1?'s':'')+'</span>'
+      }</td>
+      <td><span class="vd">${it.venc||'—'}</span></td>
+    </tr>
+  `).join('');
+
+  document.getElementById('excelPreviewWrap').style.display = '';
+}
+
+function limpiarExcel() {
+  excelItems = [];
+  document.getElementById('fileExcel').value = '';
+  document.getElementById('excelFileName').style.display = 'none';
+  document.getElementById('excelPreviewWrap').style.display = 'none';
+  clearAlert('alertExcel');
+}
+
+function generarDesdeExcel() {
+  if (!excelItems.length) return;
+  if (!ctrl) { showAlert('alertExcel','err','⚠ Seleccioná el controlador (paso 1).'); return; }
+
+  // Set global remito and items for renderPreview
+  remito = { num: 'EXCEL-FRESCURA', prov: 'CMQ', fecha: hoy(), hora: '' };
+  items  = excelItems.filter(i=>!i.skip).map(it => ({...it}));
+
+  const totalF = items.reduce((s,i)=>s+i.nFrentes,0);
+  document.getElementById('sumGrid').innerHTML = `
+    <div class="s-item"><div class="s-lbl">Fuente</div><div class="s-val" style="font-size:13px">Excel Frescura</div></div>
+    <div class="s-item"><div class="s-lbl">Fecha</div><div class="s-val" style="font-size:14px">${remito.fecha}</div></div>
+    <div class="s-item"><div class="s-lbl">SKUs</div><div class="s-val">${items.length}</div></div>
+    <div class="s-item"><div class="s-lbl">Total frentes</div><div class="s-val">${totalF}</div></div>
+  `;
+  document.getElementById('tblBody').innerHTML = items.map(it=>`
+    <tr>
+      <td><span class="cod">${it.cod}</span></td>
+      <td style="font-size:12px;font-weight:600">${it.desc}</td>
+      <td style="text-align:center;font-weight:700">${it.bultos}</td>
+      <td style="text-align:center;color:var(--gray)">${it.bulPal||'—'}</td>
+      <td style="text-align:center"><span class="bc-ok">${it.nFrentes} frente${it.nFrentes!==1?'s':''}</span></td>
+      <td><span class="vd">${it.venc||'—'}</span></td>
+    </tr>
+  `).join('');
+
+  document.getElementById('resSection').classList.add('on');
+  renderPreview();
+  document.getElementById('resSection').scrollIntoView({behavior:'smooth'});
 }
 
 async function precargarDDMManual() {
@@ -1291,6 +1545,11 @@ function clearAlert(id){ const e=document.getElementById(id); e.className='alert
 function reset(){
   imgB64=null; imgMime=null; items=[]; ddm={}; remito={};
   manualItems=[];
+  excelItems=[];
+  if(document.getElementById('fileExcel')) document.getElementById('fileExcel').value='';
+  if(document.getElementById('excelFileName')) document.getElementById('excelFileName').style.display='none';
+  if(document.getElementById('excelPreviewWrap')) document.getElementById('excelPreviewWrap').style.display='none';
+  clearAlert('alertExcel');
   document.getElementById('fileIn').value='';
   document.getElementById('previewImg').style.display='none';
   document.getElementById('pasteHint').style.display='none';
@@ -1315,6 +1574,11 @@ function reset(){
 </script>
 </body>
 </html>
+
+
+
+
+
 
 
 
