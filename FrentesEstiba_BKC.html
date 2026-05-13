@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC v10</title>
+<title>Frentes de Estiba — BKCC v11</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -158,9 +158,9 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 /* hidden QR helper */
 #qr-hidden{position:fixed;left:-9999px;top:-9999px;}
 
-/* ── PRINT STYLES ── */
+/* ── PRINT STYLES — v11: A4 VERTICAL COMPLETO (1 frente = 1 hoja) ── */
 @media print {
-  @page { size: A4 portrait; margin: 10mm; }
+  @page { size: A4 portrait; margin: 0; }
 
   /* CRÍTICO: forzar impresión de fondos de color */
   * {
@@ -173,13 +173,18 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     background: #fff !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
   }
 
-  /* Ocultar todo excepto vista previa */
-  .header { display: none !important; }
-  .container { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
-  .container > .card { display: none !important; }
-  #resSection { display: none !important; }
+  /* Ocultar TODO menos vista previa */
+  .header, .container > .card, #resSection { display: none !important; }
+  .container {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 
   #prevSection {
     display: block !important;
@@ -193,7 +198,10 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     margin: 0 !important;
     background: transparent !important;
   }
-  #prevSection .card-title { display: none !important; }
+  #prevSection .card-title,
+  #prevSection .btn-row,
+  #prevSection .alert,
+  #prevSection .loader { display: none !important; }
 
   .preview-grid {
     display: block !important;
@@ -202,81 +210,114 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     gap: 0 !important;
   }
 
-  /* Tarjeta: ancho total, altura por contenido — igual al preview */
+  /* ★ CLAVE: cada .fe = 1 hoja A4 vertical COMPLETA */
   .fe {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    margin: 0 0 0 0 !important;
-    padding: 0 !important;
-    border: 1.5px solid #DDD9CE !important;
-    border-radius: 10px !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: 210mm !important;
+    max-height: 297mm !important;
+    margin: 0 !important;
+    padding: 10mm !important;
+    border: none !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     display: flex !important;
     flex-direction: column !important;
+    justify-content: flex-start !important;
     overflow: hidden !important;
     background: #FFFFFF !important;
     box-sizing: border-box !important;
     page-break-after: always !important;
+    page-break-inside: avoid !important;
     break-after: page !important;
+    break-inside: avoid !important;
   }
   .fe:last-child {
-    page-break-after: avoid !important;
-    break-after: avoid !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
 
-  /* Body y Grid: NO estirar — respetar altura de contenido */
+  /* Header proporcionalmente grande */
+  .fe-hdr {
+    background: #1A1A1A !important;
+    color: #fff !important;
+    padding: 14px 22px !important;
+    border-radius: 12px 12px 0 0 !important;
+    flex: 0 0 auto !important;
+  }
+  .fe-hdr-logo { width: 48px !important; height: 48px !important; }
+  .fe-hdr-brand { font-size: 12px !important; color: #c9a227 !important; }
+  .fe-hdr-title { font-size: 18px !important; color: #fff !important; }
+  .fe-hdr-tag   { font-size: 12px !important; color: #c9a227 !important; }
+
+  /* Body: ocupar TODO el espacio restante con distribución pareja */
   .fe-body {
-    flex: none !important;
+    flex: 1 1 auto !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
-    padding: 16px 18px !important;
+    gap: 14px !important;
+    padding: 20px 22px !important;
+    justify-content: space-between !important;
   }
+
+  /* Código + descripción más grandes */
+  .fe-cod-lbl   { font-size: 14px !important; }
+  .fe-cod-num   { font-size: 60px !important; line-height: 1 !important; }
+  .fe-cod-desc  { font-size: 24px !important; line-height: 1.15 !important; }
+
+  /* QR más grande */
+  .fe-qr canvas,
+  .fe-qr img {
+    display: block !important;
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Bloque vencimiento gigante */
+  .fe-venc-row  {
+    background: #F0C040 !important;
+    padding: 18px 24px !important;
+    border-radius: 14px !important;
+  }
+  .fe-vlbl      { color: #7A5E00 !important; font-size: 13px !important; }
+  .fe-vfecha    { color: #1A1A1A !important; font-size: 72px !important; line-height: 1 !important; }
+  .fe-recep-lbl { color: #7A5E00 !important; font-size: 13px !important; }
+  .fe-recep-val { color: #1A1A1A !important; font-size: 18px !important; }
+
+  /* Grid de celdas más grande */
   .fe-grid {
-    flex: none !important;
     display: grid !important;
     grid-template-columns: repeat(3,1fr) !important;
-    gap: 5px !important;
+    gap: 10px !important;
   }
   .fe-cell {
     background: #F5F4F0 !important;
     border: 1px solid #E8E5DE !important;
-    border-radius: 7px !important;
-    padding: 7px 9px !important;
-    height: auto !important;
-    min-height: 0 !important;
+    border-radius: 10px !important;
+    padding: 14px 16px !important;
   }
+  .fe-cell .lbl { color: #AAAAAA !important; font-size: 11px !important; }
+  .fe-cell .val { color: #1A1A1A !important; font-size: 20px !important; }
 
-  /* Colores forzados */
-  .fe-hdr { background: #1A1A1A !important; color: #fff !important; }
-  .fe-hdr-brand { color: #c9a227 !important; }
-  .fe-hdr-title { color: #fff !important; }
-  .fe-hdr-tag   { color: #c9a227 !important; }
-  .fe-venc-row  { background: #F0C040 !important; }
-  .fe-vlbl      { color: #7A5E00 !important; }
-  .fe-recep-lbl { color: #7A5E00 !important; }
-  .fe-vfecha    { color: #1A1A1A !important; }
-  .fe-recep-val { color: #1A1A1A !important; }
-  .fe-cell .lbl { color: #AAAAAA !important; }
-  .fe-cell .val { color: #1A1A1A !important; }
+  /* Footer ABC + Pallet */
+  .fe-abc-block, .fe-pallet-block {
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+  }
   .fe-abc-block { background: #F5F4F0 !important; border: 1px solid #E8E5DE !important; }
-  .fe-abc-lbl   { color: #AAAAAA !important; }
-  .fe-abc-val   { color: #1A1A1A !important; }
   .fe-pallet-block { background: #1A1A1A !important; }
-  .fe-pallet-lbl   { color: #F0C040 !important; }
-  .fe-pnum         { color: #F0C040 !important; }
-  .fe-ctrl-lbl  { color: #AAAAAA !important; }
-  .fe-ctrl-val  { color: #c9a227 !important; }
+  .fe-abc-lbl    { color: #AAAAAA !important; font-size: 12px !important; }
+  .fe-abc-val    { color: #1A1A1A !important; font-size: 36px !important; }
+  .fe-pallet-lbl { color: #F0C040 !important; font-size: 12px !important; }
+  .fe-pnum       { color: #F0C040 !important; font-size: 36px !important; }
 
-  /* QR visible en impresión */
-  .fe-qr canvas, .fe-qr img {
-    display: block !important;
-    width: 110px !important;
-    height: 110px !important;
-    border-radius: 6px !important;
-  }
+  /* Footer controlador */
+  .fe-ctrl-lbl  { color: #AAAAAA !important; font-size: 11px !important; }
+  .fe-ctrl-val  { color: #c9a227 !important; font-size: 14px !important; }
+
+  /* Ocultar warnings amarillos en impresión */
+  .fe-warn { display: none !important; }
 }
 
 
@@ -288,7 +329,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v10.2 QR Grande + Print Fiel</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v11 Print A4 Full + Filtro DDM</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 4.0</span>
@@ -587,8 +628,33 @@ function buildResults(parsed) {
   for (const a of (parsed.articulos||[])) {
     const cod = String(a.codigo||'').trim();
     const skip = SKU_SKIP.includes(cod);
-    const d = ddm[cod] || {};
-    const bulPal = d.bulPal || null;
+
+    // ★ FILTRO DDM v11: si el código NO existe en hoja DDM → omitir totalmente
+    // Match case-insensitive del código contra las claves del DDM
+    const dKey = Object.keys(ddm).find(k => k.toLowerCase() === cod.toLowerCase());
+    const d = dKey ? ddm[dKey] : null;
+    const notInDDM = !d;
+
+    if (notInDDM && !skip) {
+      // No está en DDM → se marca como skip con flag notInDDM
+      // (no se renderiza en preview, no se imprime, no suma a totalFrentes)
+      items.push({
+        cod,
+        desc: a.descripcion || '',
+        bultos: parseInt(a.bultos) || 0,
+        bulPal: null,
+        nFrentes: 0,
+        venc: a.fecha_vencimiento || null,
+        preBlq: null,
+        blq: null,
+        skip: true,
+        notInDDM: true,
+        d: {}
+      });
+      continue;
+    }
+
+    const bulPal = d ? (d.bulPal || null) : null;
     const bultos = parseInt(a.bultos) || 0;
     // CORRECTO: ceil(bultos / bulPal). Si no hay bulPal del DDM → 1 frente default
     const nFrentes = skip ? 0 : (bulPal && bultos > 0 ? Math.ceil(bultos / bulPal) : 1);
@@ -604,7 +670,15 @@ function buildResults(parsed) {
     }
 
     if (!skip) totalFrentes += nFrentes;
-    items.push({ cod, desc: a.descripcion||d.desc||'', bultos, bulPal, nFrentes, venc: a.fecha_vencimiento||null, preBlq, blq, skip, d });
+    items.push({
+      cod,
+      desc: a.descripcion || (d ? d.desc : '') || '',
+      bultos, bulPal, nFrentes,
+      venc: a.fecha_vencimiento || null,
+      preBlq, blq, skip,
+      notInDDM: false,
+      d: d || {}
+    });
   }
 
   const validos = items.filter(i=>!i.skip).length;
@@ -623,7 +697,13 @@ function buildResults(parsed) {
       <td style="font-size:12px;font-weight:600">${it.desc}</td>
       <td style="text-align:center;font-weight:700">${it.bultos}</td>
       <td style="text-align:center;color:var(--gray)">${it.bulPal||'—'}</td>
-      <td style="text-align:center">${it.skip?'<span class="bc-skip">Omitido (7038)</span>':'<span class="bc-ok">'+it.nFrentes+' frente'+(it.nFrentes!==1?'s':'')+'</span>'}</td>
+      <td style="text-align:center">${
+        it.skip
+          ? (it.notInDDM
+              ? '<span class="bc-skip" style="background:#fef3c7;color:#92400e;">No está en DDM</span>'
+              : '<span class="bc-skip">Omitido (7038)</span>')
+          : '<span class="bc-ok">'+it.nFrentes+' frente'+(it.nFrentes!==1?'s':'')+'</span>'
+      }</td>
       <td><span class="vd">${it.venc||'—'}</span></td>
     </tr>`).join('');
 
