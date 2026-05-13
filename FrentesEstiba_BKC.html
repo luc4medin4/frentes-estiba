@@ -73,48 +73,94 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
 .bc-skip{background:#f3f4f6;color:var(--gray);padding:2px 9px;border-radius:12px;font-size:11px;}
 .vd{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--green);}
 
-/* FRENTES PREVIEW — MODO CLARO */
-.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:16px;margin-top:14px;}
-.fe{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;font-family:'Barlow Condensed',sans-serif;background:#FFFFFF;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.fe-hdr{background:var(--navy);color:#fff;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;letter-spacing:.5px;}
-.fe-hdr span.gold{color:var(--yellow);}
-.fe-body{padding:14px 16px;}
+/* FRENTES PREVIEW — MODO VERTICAL (portrait) */
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-top:14px;}
 
-/* Top: código + descripción */
-.fe-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
-.fe-logo{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);flex-shrink:0;}
-.fe-code-area{flex:1;}
-.fe-cod-lbl{font-size:9px;font-weight:700;color:#AAA;text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:1px;}
-.fe-cod{font-size:20px;font-weight:900;color:var(--navy);line-height:1;font-family:'Barlow Condensed',sans-serif;}
-.fe-prod{font-size:14px;font-weight:700;color:#333;text-transform:uppercase;line-height:1.2;margin-top:3px;letter-spacing:.2px;}
+/* Tarjeta vertical — ancho fijo tipo A5/carta angosta */
+.fe{
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  font-family:'Barlow Condensed',sans-serif;
+  background:#FFFFFF;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
+  max-width:380px;
+}
 
-/* Vencimiento */
-.fe-venc-row{margin-bottom:10px;}
-.fe-vlbl{font-size:9px;color:#7A5E00;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
-.fe-vfecha{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:var(--navy);background:var(--yellow);padding:4px 14px;border-radius:8px;display:inline-block;line-height:1;letter-spacing:-1px;}
+/* Header oscuro */
+.fe-hdr{
+  background:var(--navy);
+  color:#fff;
+  padding:10px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.5px;
+  gap:8px;
+}
+.fe-hdr-left{display:flex;align-items:center;gap:10px;}
+.fe-hdr-logo{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);flex-shrink:0;}
+.fe-hdr-texts{}
+.fe-hdr-brand{font-size:8px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;line-height:1;}
+.fe-hdr-title{font-size:11px;color:#fff;font-weight:900;letter-spacing:.5px;line-height:1.1;}
+.fe-hdr-right{text-align:right;flex-shrink:0;}
+.fe-hdr-tag{font-size:9px;color:var(--gold);letter-spacing:.5px;line-height:1.2;}
 
-/* Main area: QR + grid */
-.fe-main{display:flex;gap:10px;align-items:flex-start;}
+/* Body */
+.fe-body{padding:16px 18px;display:flex;flex-direction:column;gap:12px;flex:1;}
+
+/* Código + QR row */
+.fe-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.fe-code-area{}
+.fe-cod-lbl{font-size:9px;font-weight:700;color:#AAA;text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:2px;}
+.fe-cod{font-size:56px;font-weight:900;color:var(--navy);line-height:1;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;}
+.fe-prod{font-size:12px;font-weight:700;color:#333;text-transform:uppercase;line-height:1.3;margin-top:4px;letter-spacing:.2px;max-width:220px;}
 .fe-qr{flex-shrink:0;}
-.fe-qr canvas,.fe-qr img{width:72px!important;height:72px!important;border-radius:4px;border:1px solid var(--border);}
-.fe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;flex:1;}
-.fe-cell{background:#F5F4F0;border:1px solid #E8E5DE;border-radius:6px;padding:6px 8px;}
-.fe-cell .lbl{font-size:8px;color:#AAA;display:block;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:2px;}
-.fe-cell .val{font-size:13px;font-weight:700;color:var(--navy);}
+.fe-qr canvas,.fe-qr img{width:64px!important;height:64px!important;border-radius:6px;border:1px solid var(--border);}
 
-/* Footer */
-.fe-sep{border-top:1px solid var(--border);margin:10px 0 8px;}
-.fe-foot{display:flex;justify-content:space-between;align-items:center;font-size:10px;}
-.fe-ctrl .lbl{color:#AAA;font-size:9px;text-transform:uppercase;letter-spacing:.5px;}
-.fe-ctrl .val{font-weight:700;color:var(--navy);}
-.fe-pnum{background:var(--navy);color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;padding:3px 10px;border-radius:6px;letter-spacing:.5px;}
+/* Vencimiento — bloque amarillo full width */
+.fe-venc-row{background:var(--yellow);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;}
+.fe-venc-left{}
+.fe-vlbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:2px;}
+.fe-vfecha{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--navy);line-height:1;letter-spacing:-1px;display:block;}
+.fe-recep{text-align:right;}
+.fe-recep-lbl{font-size:8px;color:#7A5E00;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;}
+.fe-recep-val{font-size:13px;font-weight:700;color:var(--navy);display:block;}
+
+/* Grid de datos 3×3 */
+.fe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.fe-cell{background:#F5F4F0;border:1px solid #E8E5DE;border-radius:7px;padding:7px 9px;}
+.fe-cell .lbl{font-size:7.5px;color:#AAA;display:block;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:3px;}
+.fe-cell .val{font-size:13px;font-weight:700;color:var(--navy);display:block;}
+
+/* Footer: ABC + Pallet badge */
+.fe-sep{border-top:1px solid var(--border);margin:2px 0;}
+.fe-foot{display:flex;justify-content:space-between;align-items:stretch;gap:8px;}
+.fe-abc-block{background:#F5F4F0;border:1px solid #E8E5DE;border-radius:8px;padding:8px 14px;flex:1;}
+.fe-abc-lbl{font-size:8px;color:#AAA;text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:2px;}
+.fe-abc-val{font-size:22px;font-weight:900;color:var(--navy);}
+.fe-pallet-block{background:var(--navy);border-radius:8px;padding:8px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;}
+.fe-pallet-lbl{font-size:8px;color:var(--yellow);text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:2px;}
+.fe-pnum{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--yellow);line-height:1;}
+
+/* Controlador */
+.fe-ctrl-row{display:flex;justify-content:space-between;align-items:center;padding-top:2px;}
+.fe-ctrl-lbl{font-size:9px;color:#AAA;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
+.fe-ctrl-val{font-size:11px;font-weight:700;color:var(--yellow);letter-spacing:.5px;}
+
+/* Nota de alerta */
+.fe-warn{font-size:9px;color:#AAA;text-align:center;padding-top:2px;font-style:italic;}
 
 /* hidden QR helper */
 #qr-hidden{position:fixed;left:-9999px;top:-9999px;}
 
-/* ── PRINT STYLES: A4 horizontal, aprovecha márgenes ── */
+/* ── PRINT STYLES: A4 portrait vertical ── */
 @media print {
-  @page { size: A4 landscape; margin: 8mm; }
+  @page { size: A4 portrait; margin: 8mm; }
   body { background: #fff !important; }
   .header, .container > .card:not(.print-card) { display: none !important; }
   #resSection, #prevSection { display: block !important; }
@@ -123,12 +169,12 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   .preview-grid { display: block !important; margin: 0 !important; }
   .fe {
     border: 1.5px solid #DDD9CE !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     page-break-after: always !important;
     break-after: page !important;
-    width: 277mm !important;
-    min-height: 178mm !important;
-    max-height: 182mm !important;
+    width: 190mm !important;
+    max-width: 190mm !important;
+    margin: 0 auto !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
     display: flex !important;
@@ -136,15 +182,9 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
     box-shadow: none !important;
   }
   .fe:last-child { page-break-after: avoid !important; break-after: avoid !important; }
-  .fe-hdr { padding: 7px 14px !important; }
-  .fe-body { padding: 10px 14px !important; flex: 1 !important; display: flex !important; flex-direction: column !important; gap: 6px !important; }
-  .fe-cod { font-size: 18px !important; }
-  .fe-prod { font-size: 16px !important; }
-  .fe-vfecha { font-size: 48px !important; padding: 5px 16px !important; }
-  .fe-grid { grid-template-columns: repeat(3,1fr) !important; gap: 5px !important; }
-  .fe-cell { padding: 5px 8px !important; }
-  .fe-cell .val { font-size: 13px !important; }
 }
+
+
 </style>
 </head>
 <body>
@@ -153,7 +193,7 @@ body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1 · v7 Modo Claro A4</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v8 Modo Vertical A4</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 3.0</span>
@@ -548,53 +588,82 @@ function renderPreview() {
       const div = document.createElement('div');
       div.className = 'fe';
       const qrId = `qr_prev_${it.cod}_${p}`;
+      const inDDM = Object.keys(it.d).length > 0;
       div.innerHTML = `
         <div class="fe-hdr">
-          <span>REMITO ${remito.num} &nbsp;·&nbsp; ${remito.prov} &nbsp;·&nbsp; ${remito.fecha} ${remito.hora}</span>
-          <span class="gold">BKCC · FRENTE DE ESTIBA · DPO 2.1</span>
+          <div class="fe-hdr-left">
+            <img class="fe-hdr-logo" src="${LOGO_URL}" alt="">
+            <div class="fe-hdr-texts">
+              <div class="fe-hdr-brand">BKCC · CERVECERÍA Y MALTERÍA QUILMES</div>
+              <div class="fe-hdr-title">BECCACECE HNOS SA</div>
+            </div>
+          </div>
+          <div class="fe-hdr-right">
+            <div class="fe-hdr-tag">FRENTE DE ESTIBA · DPO 2.1</div>
+            <div class="fe-hdr-tag">REM ${remito.num}</div>
+          </div>
         </div>
         <div class="fe-body">
+          <!-- Código + QR -->
           <div class="fe-top">
-            <img class="fe-logo" src="${LOGO_URL}" alt="">
             <div class="fe-code-area">
-              <span class="fe-cod-lbl">Código</span>
+              <span class="fe-cod-lbl">CÓDIGO</span>
               <div class="fe-cod">${it.cod}</div>
               <div class="fe-prod">${it.desc}</div>
             </div>
-          </div>
-          <div class="fe-venc-row">
-            <div class="fe-vlbl">VENCIMIENTO</div>
-            <div class="fe-vfecha">${it.venc||'SIN FECHA'}</div>
-          </div>
-          <div class="fe-main">
             <div class="fe-qr" id="${qrId}"></div>
-            <div class="fe-grid">
-              ${cell('BUL/PAL', it.bulPal||'—')}
-              ${cell('APIL.', it.d.apil||'—')}
-              ${cell('CANCHA', it.d.cancha||'—')}
-              ${cell('PRE-BLOQUEO', it.preBlq||'—')}
-              ${cell('BLOQUEO', it.blq||'—')}
-              ${cell('ALMACÉN', it.d.almacen||'—')}
-              ${cell('KG/BULTO', it.d.peso||'—')}
-              ${cell('HL/BULTO', it.d.hl||'—')}
-              ${cell('ABC', it.d.abc||'—')}
+          </div>
+
+          <!-- Vencimiento + Recepción -->
+          <div class="fe-venc-row">
+            <div class="fe-venc-left">
+              <span class="fe-vlbl">VENCIMIENTO</span>
+              <span class="fe-vfecha">${it.venc||'SIN FECHA'}</span>
+            </div>
+            <div class="fe-recep">
+              <span class="fe-recep-lbl">RECEPCIÓN</span>
+              <span class="fe-recep-val">${remito.fecha}</span>
             </div>
           </div>
+
+          <!-- Grid 3×3 datos -->
+          <div class="fe-grid">
+            ${cell('BULTOS / PALLET', it.bulPal||'—')}
+            ${cell('APILABILIDAD', it.d.apil||'—')}
+            ${cell('CANCHA', it.d.cancha||'—')}
+            ${cell('PRE-BLOQUEO', it.preBlq||'—')}
+            ${cell('BLOQUEO', it.blq||'—')}
+            ${cell('ALMACÉN', it.d.almacen||'—')}
+            ${cell('KG / BULTO', it.d.peso||'—')}
+            ${cell('HL / BULTO', it.d.hl||'—')}
+            ${cell('—', '—')}
+          </div>
+
+          <!-- Footer: ABC + Pallet -->
           <div class="fe-sep"></div>
           <div class="fe-foot">
-            <div class="fe-ctrl">
-              <span class="lbl">RECEPCIÓN: </span><span class="val">${remito.fecha}</span>
-              &nbsp;&nbsp;
-              <span class="lbl">CONTROLADOR: </span><span class="val">${ctrl}</span>
+            <div class="fe-abc-block">
+              <span class="fe-abc-lbl">ABC</span>
+              <span class="fe-abc-val">${it.d.abc||'—'}</span>
             </div>
-            <div class="fe-pnum">PALLET ${p} / ${it.nFrentes}</div>
+            <div class="fe-pallet-block">
+              <span class="fe-pallet-lbl">PALLET</span>
+              <span class="fe-pnum">${p} / ${it.nFrentes}</span>
+            </div>
           </div>
+
+          <!-- Controlador -->
+          <div class="fe-ctrl-row">
+            <span class="fe-ctrl-lbl">CONTROLADOR</span>
+            <span class="fe-ctrl-val">${ctrl}</span>
+          </div>
+          ${!inDDM ? `<div class="fe-warn">⚠ Código ${it.cod} no encontrado en Frentes de Estiba · datos de referencia de la hoja maestra</div>` : ''}
         </div>`;
       grid.appendChild(div);
 
       // Inject QR asynchronously
       (async (elId, text) => {
-        const canvas = await generateQRCanvas(text, 72);
+        const canvas = await generateQRCanvas(text, 64);
         const container = document.getElementById(elId);
         if (container && canvas) container.appendChild(canvas);
       })(qrId, makeQRText(it, p));
@@ -612,8 +681,8 @@ async function generarPDF() {
 
   try {
     const { jsPDF } = window.jspdf;
-    const W=297, H=210;
-    const doc = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4' });
+    const W=210, H=297;
+    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
 
     // Pre-generate all QR codes
     const fList = await generateAllQRs();
@@ -651,7 +720,7 @@ async function generarPDF() {
   btn.textContent = '🖨️ Generar PDF e Imprimir';
 }
 
-// ─── DRAW FRENTE (jsPDF) — MODO CLARO A4 LANDSCAPE ──────────────────────────
+// ─── DRAW FRENTE (jsPDF) — MODO VERTICAL A4 PORTRAIT ──────────────────────────
 function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const navy   = [26, 26, 26];
   const gold   = [201, 162, 39];
@@ -661,71 +730,72 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
   const lgray  = [232, 229, 222];
   const gray   = [170, 170, 170];
   const dkgray = [51, 51, 51];
-  const mx = 8; // márgenes reducidos para A4
+  const mx = 10;
 
   // ── Marco exterior ──
   doc.setDrawColor(...lgray); doc.setLineWidth(0.6);
   doc.setFillColor(...white);
-  doc.roundedRect(mx, mx, W-mx*2, H-mx*2, 4, 4, 'FD');
+  doc.roundedRect(mx, mx, W-mx*2, H-mx*2, 5, 5, 'FD');
 
   // ── HEADER oscuro ──
   doc.setFillColor(...navy);
-  doc.roundedRect(mx, mx, W-mx*2, 14, 4, 4, 'F');
-  doc.rect(mx, mx+7, W-mx*2, 7, 'F');
+  doc.roundedRect(mx, mx, W-mx*2, 18, 5, 5, 'F');
+  doc.rect(mx, mx+10, W-mx*2, 8, 'F');
 
-  doc.setFontSize(6.5); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text('BKCC · BECCACECE HNOS SA', mx+6, mx+6);
-  doc.setTextColor(...white);
-  doc.text('FRENTE DE ESTIBA · DPO 2.1', W/2, mx+6, {align:'center'});
-  doc.text(`REM ${remito.num}`, W-mx-6, mx+6, {align:'right'});
-  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(180,180,180);
-  doc.text(`${remito.prov}  ·  ${remito.fecha}  ${remito.hora}`, W/2, mx+11.5, {align:'center'});
+  // Logo (círculo amarillo placeholder)
+  const logoX = mx+5, logoY = mx+3, logoS = 12;
+  try { doc.addImage(LOGO_URL, 'JPEG', logoX, logoY, logoS, logoS); } catch(e){}
 
-  // ── LOGO ──
-  try { doc.addImage(LOGO_URL, 'JPEG', W-mx-22, mx+17, 16, 16); } catch(e){}
+  // Header texts left
+  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gold);
+  doc.text('BKCC · CERVECERÍA Y MALTERÍA QUILMES', logoX+logoS+4, mx+7);
+  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(...white);
+  doc.text('BECCACECE HNOS SA', logoX+logoS+4, mx+14);
 
-  const cx = mx+6;
-  const bodyY = mx+16;
+  // Header right
+  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gold);
+  doc.text('FRENTE DE ESTIBA · DPO 2.1', W-mx-5, mx+7, {align:'right'});
+  doc.text(`REM ${remito.num}`, W-mx-5, mx+13, {align:'right'});
 
-  // ── CÓDIGO (más chico) ──
+  const bodyY = mx + 22;
+  const cx = mx + 5;
+  const cw = W - mx*2 - 10;
+
+  // ── CÓDIGO ──
   doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('CÓDIGO', cx, bodyY+6);
-  doc.setFontSize(22); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(it.cod, cx, bodyY+17);
+  doc.text('CÓDIGO', cx, bodyY);
+  doc.setFontSize(36); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(it.cod, cx, bodyY + 14);
 
-  // ── DESCRIPCIÓN (más grande) ──
-  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(...dkgray);
-  const desc = it.desc.length>58 ? it.desc.substring(0,58)+'…' : it.desc;
-  doc.text(desc, cx, bodyY+26);
-
-  // ── LÍNEA DIVISORIA ──
-  doc.setDrawColor(...lgray); doc.setLineWidth(0.25);
-  doc.line(cx, bodyY+30, W-mx-6, bodyY+30);
-
-  // ── VENCIMIENTO (más grande) ──
-  doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(...gold);
-  doc.text('VENCIMIENTO', cx, bodyY+38);
-
-  const vTxt  = it.venc || 'SIN FECHA';
-  const vBoxW = W - mx*2 - 12;
-  doc.setFillColor(...yellow);
-  doc.roundedRect(cx, bodyY+41, vBoxW, 24, 3, 3, 'F');
-  doc.setFontSize(38); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(vTxt, cx + vBoxW/2, bodyY+57, {align:'center'});
-
-  // ── QR CODE ──
-  const qrY = bodyY+68;
-  const qrSize = 30;
+  // ── QR (top right) ──
+  const qrSize = 22;
   if (qrUrl) {
-    try { doc.addImage(qrUrl, 'PNG', cx, qrY, qrSize, qrSize); } catch(e){}
+    try { doc.addImage(qrUrl, 'PNG', W-mx-5-qrSize, bodyY-2, qrSize, qrSize); } catch(e){}
   }
-  doc.setFontSize(5); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('ESCANEAR', cx + qrSize/2, qrY + qrSize + 3, {align:'center'});
 
-  // ── GRID DE DATOS (3×3, a la derecha del QR) ──
-  const gridX = cx + qrSize + 5;
-  const gridW = W - mx*2 - 12 - qrSize - 5;
-  const gridY = qrY;
+  // ── DESCRIPCIÓN ──
+  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...dkgray);
+  const desc = it.desc.length>60 ? it.desc.substring(0,60)+'…' : it.desc;
+  doc.text(desc, cx, bodyY + 20);
+
+  // ── VENCIMIENTO BLOCK (yellow) ──
+  const vY = bodyY + 26;
+  const vH = 22;
+  doc.setFillColor(...yellow);
+  doc.roundedRect(cx, vY, cw, vH, 3, 3, 'F');
+
+  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
+  doc.text('VENCIMIENTO', cx+4, vY+6);
+  doc.setFontSize(28); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(it.venc||'SIN FECHA', cx+4, vY+18);
+
+  doc.setFontSize(6); doc.setFont('helvetica','bold'); doc.setTextColor(122, 94, 0);
+  doc.text('RECEPCIÓN', W-mx-5-4, vY+6, {align:'right'});
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(remito.fecha, W-mx-5-4, vY+16, {align:'right'});
+
+  // ── GRID 3×3 DATOS ──
+  const gridY = vY + vH + 5;
   const cells = [
     ['BULTOS / PALLET', it.bulPal||'—'],
     ['APILABILIDAD',    it.d.apil||'—'],
@@ -735,50 +805,54 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
     ['ALMACÉN',         it.d.almacen||'—'],
     ['KG / BULTO',      it.d.peso||'—'],
     ['HL / BULTO',      it.d.hl||'—'],
-    ['ABC',             it.d.abc||'—'],
+    ['—',               '—'],
   ];
-  const cW = gridW / 3 - 1.5;
-  const cH = 15;
-  cells.forEach((c,i) => {
-    const col = i%3, row = Math.floor(i/3);
-    const gx = gridX + col*(cW+2);
-    const gy = gridY + row*(cH+2);
+  const colW = (cw - 4) / 3;
+  const rowH = 14;
+  cells.forEach((c, i) => {
+    const col = i % 3, row = Math.floor(i / 3);
+    const gx = cx + col * (colW + 2);
+    const gy = gridY + row * (rowH + 2);
     doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
-    doc.roundedRect(gx, gy, cW, cH, 2, 2, 'FD');
-    doc.setFontSize(5.5); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
-    doc.text(c[0], gx+3, gy+5.5);
-    doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-    doc.text(String(c[1]).substring(0,20), gx+3, gy+12.5);
+    doc.roundedRect(gx, gy, colW, rowH, 2, 2, 'FD');
+    doc.setFontSize(5); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
+    doc.text(c[0], gx+3, gy+5);
+    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+    doc.text(String(c[1]).substring(0,16), gx+3, gy+11.5);
   });
 
-  // ── BARRA INFERIOR: RECEPCIÓN + CONTROLADOR + PALLET ──
-  const ftY = H - mx - 18;
+  // ── SEPARATOR ──
+  const sepY = gridY + 3*(rowH+2) + 4;
   doc.setDrawColor(...lgray); doc.setLineWidth(0.25);
-  doc.line(cx, ftY, W-mx-6, ftY);
+  doc.line(cx, sepY, W-mx-5, sepY);
 
-  const recW = (W-mx*2-12) * 0.6;
-  doc.setFillColor(250,252,255); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
-  doc.roundedRect(cx, ftY+2, recW, 12, 2, 2, 'FD');
+  // ── FOOTER: ABC + PALLET ──
+  const ftY = sepY + 3;
+  const halfW = (cw - 3) / 2;
 
-  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('RECEPCIÓN', cx+4, ftY+7);
-  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(remito.fecha, cx+4, ftY+12.5);
+  // ABC block
+  doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
+  doc.roundedRect(cx, ftY, halfW, 16, 2, 2, 'FD');
+  doc.setFontSize(5); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
+  doc.text('ABC', cx+4, ftY+5.5);
+  doc.setFontSize(16); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(it.d.abc||'—', cx+4, ftY+14);
 
-  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('CONTROLADOR', cx+recW/2, ftY+7, {align:'center'});
-  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(ctrl, cx+recW/2, ftY+12.5, {align:'center'});
-
-  // Pallet badge
-  const palX = cx + recW + 4;
-  const palW = W - mx*2 - 12 - recW - 4;
+  // Pallet block
+  const palX = cx + halfW + 3;
   doc.setFillColor(...navy);
-  doc.roundedRect(palX, ftY+2, palW, 12, 2, 2, 'F');
-  doc.setFontSize(5.5); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text('PALLET', palX + palW/2, ftY+7, {align:'center'});
-  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
-  doc.text(`${palletNum} / ${it.nFrentes}`, palX + palW/2, ftY+13.5, {align:'center'});
+  doc.roundedRect(palX, ftY, halfW, 16, 2, 2, 'F');
+  doc.setFontSize(5); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text('PALLET', palX+4, ftY+5.5);
+  doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text(`${palletNum} / ${it.nFrentes}`, palX+4, ftY+14);
+
+  // ── CONTROLADOR ROW ──
+  const ctrlY = ftY + 20;
+  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
+  doc.text('CONTROLADOR', cx, ctrlY);
+  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(...gold);
+  doc.text(ctrl, W-mx-5, ctrlY, {align:'right'});
 }
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
