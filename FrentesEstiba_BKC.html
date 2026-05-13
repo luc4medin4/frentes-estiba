@@ -3,57 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frentes de Estiba — BKCC</title>
+<title>Frentes de Estiba — BKCC v7</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
-:root{
-  --navy:#0d2340;
-  --gold:#c9a227;
-  --yellow:#f5c518;
-  --white:#fff;
-  --light:#f4f6f9;
-  --gray:#8a9ab5;
-  --border:#dde3ed;
-  --green:#2e9e6b;
-  /* LIGHT CARD PALETTE */
-  --card-bg:#ffffff;
-  --card-border:#e2e8f0;
-  --card-shadow:0 2px 12px rgba(13,35,64,.08);
-  --page-bg:#f0f3f8;
-  --accent-gold:#c9a227;
-  --accent-yellow:#f5c518;
-  --text-primary:#0d2340;
-  --text-secondary:#64748b;
-  --text-muted:#94a3b8;
-}
+:root{--navy:#1A1A1A;--gold:#c9a227;--yellow:#F0C040;--white:#fff;--light:#F5F4F0;--gray:#8a9ab5;--border:#DDD9CE;--green:#2e9e6b;--cream:#FAFAF7;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Barlow',sans-serif;background:var(--page-bg);color:var(--navy);}
-.header{background:var(--navy);padding:14px 28px;display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;}
+body{font-family:'Barlow',sans-serif;background:#F0EEE8;color:var(--navy);}
+.header{background:var(--navy);padding:14px 28px;display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--yellow);position:sticky;top:0;z-index:100;}
 .header img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);}
 .header h1{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;letter-spacing:1px;line-height:1;}
 .header p{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
 .header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
+.badge{background:var(--yellow);color:var(--navy);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
 
 .container{max-width:900px;margin:28px auto;padding:0 20px;}
-.card{background:var(--card-bg);border-radius:12px;border:1px solid var(--card-border);padding:24px;margin-bottom:18px;box-shadow:var(--card-shadow);}
+.card{background:var(--cream);border-radius:12px;border:1.5px solid var(--border);padding:24px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
 .card-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-.step{background:var(--navy);color:var(--gold);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
+.step{background:var(--navy);color:var(--yellow);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
 
 .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .inp{flex:1;min-width:220px;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border .15s;}
-.inp:focus{border-color:var(--gold);}
+.inp:focus{border-color:var(--yellow);}
 .inp-label{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px;}
 .saved-tag{background:#f0fdf4;border:1px solid #86efac;color:#166534;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;display:none;}
 
 .ctrl-btn{padding:8px 16px;border-radius:8px;border:2px solid var(--border);background:#fff;color:var(--navy);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
-.ctrl-btn:hover{border-color:var(--gold);background:#fdf8ec;}
-.ctrl-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.ctrl-btn:hover{border-color:var(--yellow);background:#fdf8ec;}
+.ctrl-btn.active{background:var(--navy);border-color:var(--navy);color:var(--yellow);}
 
 .drop-zone{border:2px dashed var(--border);border-radius:10px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--light);position:relative;}
-.drop-zone:hover,.drop-zone.over{border-color:var(--gold);background:#fdf8ec;}
+.drop-zone:hover,.drop-zone.over{border-color:var(--yellow);background:#fdf8ec;}
 .drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .drop-zone span{font-size:38px;display:block;margin-bottom:8px;}
 .drop-zone p{color:var(--gray);font-size:13px;}
@@ -64,7 +45,7 @@ body{font-family:'Barlow',sans-serif;background:var(--page-bg);color:var(--navy)
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;}
 .btn-navy{background:var(--navy);color:#fff;} .btn-navy:hover:not(:disabled){background:#1a3a6b;transform:translateY(-1px);}
 .btn-green{background:var(--green);color:#fff;} .btn-green:hover{background:#238a5a;}
-.btn-gold{background:var(--gold);color:var(--navy);} .btn-gold:hover{background:#b8911e;}
+.btn-gold{background:var(--yellow);color:var(--navy);} .btn-gold:hover{background:#d4a832;}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
 
 .loader{display:none;align-items:center;gap:10px;padding:14px;background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;margin-top:14px;font-size:13px;color:var(--navy);}
@@ -92,99 +73,78 @@ body{font-family:'Barlow',sans-serif;background:var(--page-bg);color:var(--navy)
 .bc-skip{background:#f3f4f6;color:var(--gray);padding:2px 9px;border-radius:12px;font-size:11px;}
 .vd{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--green);}
 
-/* ═══════════════════════════════════════════════════
-   FRENTES PREVIEW — MODO CLARO (light card design)
-   ═══════════════════════════════════════════════════ */
-.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:18px;margin-top:14px;}
+/* FRENTES PREVIEW — MODO CLARO */
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:16px;margin-top:14px;}
+.fe{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;font-family:'Barlow Condensed',sans-serif;background:#FFFFFF;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.fe-hdr{background:var(--navy);color:#fff;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;letter-spacing:.5px;}
+.fe-hdr span.gold{color:var(--yellow);}
+.fe-body{padding:14px 16px;}
 
-.fe{
-  border:1.5px solid #d1d9e8;
-  border-radius:14px;
-  overflow:hidden;
-  font-family:'Barlow Condensed',sans-serif;
-  background:#ffffff;
-  box-shadow:0 4px 18px rgba(13,35,64,.10);
-}
+/* Top: código + descripción */
+.fe-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.fe-logo{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);flex-shrink:0;}
+.fe-code-area{flex:1;}
+.fe-cod-lbl{font-size:9px;font-weight:700;color:#AAA;text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:1px;}
+.fe-cod{font-size:20px;font-weight:900;color:var(--navy);line-height:1;font-family:'Barlow Condensed',sans-serif;}
+.fe-prod{font-size:14px;font-weight:700;color:#333;text-transform:uppercase;line-height:1.2;margin-top:3px;letter-spacing:.2px;}
 
-/* Header strip: white bg, subtle border bottom */
-.fe-hdr{
-  background:#ffffff;
-  border-bottom:1.5px solid #e2e8f2;
-  padding:9px 14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.6px;
-  color:var(--text-secondary);
-}
-.fe-hdr .fe-hdr-left{display:flex;align-items:center;gap:9px;}
-.fe-hdr .fe-hdr-logo{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;}
-.fe-hdr .fe-hdr-brand{display:flex;flex-direction:column;line-height:1.2;}
-.fe-hdr .fe-hdr-brand strong{font-size:11px;color:var(--navy);font-weight:900;letter-spacing:.5px;}
-.fe-hdr .fe-hdr-brand span{font-size:9px;color:var(--text-secondary);letter-spacing:1px;text-transform:uppercase;}
-.fe-hdr .fe-hdr-right{font-size:9px;color:var(--text-muted);text-align:right;line-height:1.4;}
+/* Vencimiento */
+.fe-venc-row{margin-bottom:10px;}
+.fe-vlbl{font-size:9px;color:#7A5E00;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.fe-vfecha{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:var(--navy);background:var(--yellow);padding:4px 14px;border-radius:8px;display:inline-block;line-height:1;letter-spacing:-1px;}
 
-.fe-body{padding:14px 16px 12px;}
+/* Main area: QR + grid */
+.fe-main{display:flex;gap:10px;align-items:flex-start;}
+.fe-qr{flex-shrink:0;}
+.fe-qr canvas,.fe-qr img{width:72px!important;height:72px!important;border-radius:4px;border:1px solid var(--border);}
+.fe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;flex:1;}
+.fe-cell{background:#F5F4F0;border:1px solid #E8E5DE;border-radius:6px;padding:6px 8px;}
+.fe-cell .lbl{font-size:8px;color:#AAA;display:block;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:2px;}
+.fe-cell .val{font-size:13px;font-weight:700;color:var(--navy);}
 
-/* Code + product name row */
-.fe-top{display:flex;align-items:flex-start;gap:0;margin-bottom:2px;border-bottom:1px solid #eef1f8;padding-bottom:10px;}
-.fe-cod-block{flex:1;}
-.fe-cod-lbl{font-size:9px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:1px;}
-.fe-cod{font-size:30px;font-weight:900;color:var(--navy);line-height:1;letter-spacing:-0.5px;}
-.fe-prod{font-size:11.5px;font-weight:700;color:#334155;text-transform:uppercase;line-height:1.3;margin-top:4px;letter-spacing:.3px;}
-.fe-top-qr{flex-shrink:0;margin-left:10px;align-self:center;}
-.fe-top-qr canvas,.fe-top-qr img{width:62px!important;height:62px!important;border-radius:5px;border:1.5px solid #d1d9e8;}
-
-/* Vencimiento block — prominent yellow card */
-.fe-vblock{
-  background:var(--yellow);
-  border-radius:8px;
-  padding:7px 12px 6px;
-  margin:10px 0 10px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.fe-vlbl{font-size:9px;color:rgba(0,0,0,.55);font-weight:800;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:1px;}
-.fe-vfecha{font-size:28px;font-weight:900;color:#0d2340;line-height:1;letter-spacing:-.5px;}
-.fe-vblock-right{font-size:9px;color:rgba(0,0,0,.5);text-align:right;line-height:1.6;}
-.fe-vblock-right strong{display:block;font-size:10px;color:#0d2340;font-weight:800;}
-
-/* Data grid */
-.fe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
-.fe-cell{
-  background:#f6f8fc;
-  border:1px solid #e2e8f2;
-  border-radius:6px;
-  padding:5px 8px;
-}
-.fe-cell .lbl{font-size:8.5px;color:var(--text-muted);display:block;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;}
-.fe-cell .val{font-size:12.5px;font-weight:800;color:var(--navy);}
-
-/* Pallet badge */
-.fe-pallet-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  background:var(--navy);
-  color:var(--gold);
-  border-radius:6px;
-  padding:3px 10px;
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:.5px;
-}
-
-.fe-sep{border-top:1px solid #e8ecf4;margin:8px 0;}
+/* Footer */
+.fe-sep{border-top:1px solid var(--border);margin:10px 0 8px;}
 .fe-foot{display:flex;justify-content:space-between;align-items:center;font-size:10px;}
-.fe-ctrl-info{display:flex;gap:14px;}
-.fe-ctrl-item .lbl{font-size:8.5px;color:var(--text-muted);display:block;letter-spacing:.5px;text-transform:uppercase;}
-.fe-ctrl-item .val{font-size:11px;font-weight:800;color:var(--navy);}
+.fe-ctrl .lbl{color:#AAA;font-size:9px;text-transform:uppercase;letter-spacing:.5px;}
+.fe-ctrl .val{font-weight:700;color:var(--navy);}
+.fe-pnum{background:var(--navy);color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;padding:3px 10px;border-radius:6px;letter-spacing:.5px;}
 
 /* hidden QR helper */
 #qr-hidden{position:fixed;left:-9999px;top:-9999px;}
+
+/* ── PRINT STYLES: A4 horizontal, aprovecha márgenes ── */
+@media print {
+  @page { size: A4 landscape; margin: 8mm; }
+  body { background: #fff !important; }
+  .header, .container > .card:not(.print-card) { display: none !important; }
+  #resSection, #prevSection { display: block !important; }
+  .card { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; background: transparent !important; }
+  .card-title { display: none !important; }
+  .preview-grid { display: block !important; margin: 0 !important; }
+  .fe {
+    border: 1.5px solid #DDD9CE !important;
+    border-radius: 10px !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    width: 277mm !important;
+    min-height: 178mm !important;
+    max-height: 182mm !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: none !important;
+  }
+  .fe:last-child { page-break-after: avoid !important; break-after: avoid !important; }
+  .fe-hdr { padding: 7px 14px !important; }
+  .fe-body { padding: 10px 14px !important; flex: 1 !important; display: flex !important; flex-direction: column !important; gap: 6px !important; }
+  .fe-cod { font-size: 18px !important; }
+  .fe-prod { font-size: 16px !important; }
+  .fe-vfecha { font-size: 48px !important; padding: 5px 16px !important; }
+  .fe-grid { grid-template-columns: repeat(3,1fr) !important; gap: 5px !important; }
+  .fe-cell { padding: 5px 8px !important; }
+  .fe-cell .val { font-size: 13px !important; }
+}
 </style>
 </head>
 <body>
@@ -193,7 +153,7 @@ body{font-family:'Barlow',sans-serif;background:var(--page-bg);color:var(--navy)
   <img id="headerLogo" src="" alt="BKCC">
   <div>
     <h1>FRENTES DE ESTIBA</h1>
-    <p>Sistema de Impresión · BKCC · DPO 2.1</p>
+    <p>Sistema de Impresión · BKCC · DPO 2.1 · v7 Modo Claro A4</p>
   </div>
   <div class="header-right">
     <span class="badge">Almacén Digital 3.0</span>
@@ -590,29 +550,31 @@ function renderPreview() {
       const qrId = `qr_prev_${it.cod}_${p}`;
       div.innerHTML = `
         <div class="fe-hdr">
-          <span>REMITO ${remito.num}</span>
-          <span style="color:var(--gold)">BKCC · FRENTE DE ESTIBA · DPO 2.1</span>
+          <span>REMITO ${remito.num} &nbsp;·&nbsp; ${remito.prov} &nbsp;·&nbsp; ${remito.fecha} ${remito.hora}</span>
+          <span class="gold">BKCC · FRENTE DE ESTIBA · DPO 2.1</span>
         </div>
         <div class="fe-body">
           <div class="fe-top">
             <img class="fe-logo" src="${LOGO_URL}" alt="">
-            <div>
-              <div style="font-size:9px;color:#888;letter-spacing:1px">CÓDIGO</div>
+            <div class="fe-code-area">
+              <span class="fe-cod-lbl">Código</span>
               <div class="fe-cod">${it.cod}</div>
               <div class="fe-prod">${it.desc}</div>
             </div>
           </div>
-          <div class="fe-vlbl">VENCIMIENTO</div>
-          <div class="fe-vfecha">${it.venc||'SIN FECHA'}</div>
+          <div class="fe-venc-row">
+            <div class="fe-vlbl">VENCIMIENTO</div>
+            <div class="fe-vfecha">${it.venc||'SIN FECHA'}</div>
+          </div>
           <div class="fe-main">
             <div class="fe-qr" id="${qrId}"></div>
             <div class="fe-grid">
               ${cell('BUL/PAL', it.bulPal||'—')}
               ${cell('APIL.', it.d.apil||'—')}
-              ${cell('ALMACÉN', it.d.almacen||'—')}
+              ${cell('CANCHA', it.d.cancha||'—')}
               ${cell('PRE-BLOQUEO', it.preBlq||'—')}
               ${cell('BLOQUEO', it.blq||'—')}
-              ${cell('CANCHA', it.d.cancha||'—')}
+              ${cell('ALMACÉN', it.d.almacen||'—')}
               ${cell('KG/BULTO', it.d.peso||'—')}
               ${cell('HL/BULTO', it.d.hl||'—')}
               ${cell('ABC', it.d.abc||'—')}
@@ -623,9 +585,9 @@ function renderPreview() {
             <div class="fe-ctrl">
               <span class="lbl">RECEPCIÓN: </span><span class="val">${remito.fecha}</span>
               &nbsp;&nbsp;
-              <span class="lbl">CONTROL.: </span><span class="val">${ctrl}</span>
+              <span class="lbl">CONTROLADOR: </span><span class="val">${ctrl}</span>
             </div>
-            <div class="fe-pnum">Pallet ${p} / ${it.nFrentes}</div>
+            <div class="fe-pnum">PALLET ${p} / ${it.nFrentes}</div>
           </div>
         </div>`;
       grid.appendChild(div);
@@ -689,80 +651,80 @@ async function generarPDF() {
   btn.textContent = '🖨️ Generar PDF e Imprimir';
 }
 
-// ─── DRAW FRENTE (jsPDF) ────────────────────────────────────────────────────────
+// ─── DRAW FRENTE (jsPDF) — MODO CLARO A4 LANDSCAPE ──────────────────────────
 function drawFrente(doc, it, palletNum, W, H, qrUrl) {
-  const navy   = [13,35,64];
-  const gold   = [201,162,39];
-  const yellow = [245,197,24];
-  const white  = [255,255,255];
-  const lgray  = [240,243,248];   // ← array, no indexado
-  const gray   = [138,154,181];
-  const dkgray = [80,80,80];
-  const mx = 12;
+  const navy   = [26, 26, 26];
+  const gold   = [201, 162, 39];
+  const yellow = [240, 192, 64];
+  const white  = [255, 255, 255];
+  const cream  = [245, 244, 240];
+  const lgray  = [232, 229, 222];
+  const gray   = [170, 170, 170];
+  const dkgray = [51, 51, 51];
+  const mx = 8; // márgenes reducidos para A4
 
-  // ── Borde exterior ──
-  doc.setDrawColor(...navy); doc.setLineWidth(0.8);
+  // ── Marco exterior ──
+  doc.setDrawColor(...lgray); doc.setLineWidth(0.6);
   doc.setFillColor(...white);
   doc.roundedRect(mx, mx, W-mx*2, H-mx*2, 4, 4, 'FD');
 
-  // ── HEADER ──
+  // ── HEADER oscuro ──
   doc.setFillColor(...navy);
-  doc.roundedRect(mx, mx, W-mx*2, 16, 4, 4, 'F');
-  doc.rect(mx, mx+8, W-mx*2, 8, 'F');
+  doc.roundedRect(mx, mx, W-mx*2, 14, 4, 4, 'F');
+  doc.rect(mx, mx+7, W-mx*2, 7, 'F');
 
-  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(...gold);
-  doc.text('BKCC · BECCACECE HNOS SA', mx+6, mx+7);
+  doc.setFontSize(6.5); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text('BKCC · BECCACECE HNOS SA', mx+6, mx+6);
   doc.setTextColor(...white);
-  doc.text('FRENTE DE ESTIBA · DPO 2.1', W/2, mx+7, {align:'center'});
-  doc.text(`REM ${remito.num}`, W-mx-6, mx+7, {align:'right'});
-  doc.setFontSize(6); doc.setFont('helvetica','normal');
-  doc.text(`${remito.prov}  ·  ${remito.fecha}  ${remito.hora}`, W/2, mx+13, {align:'center'});
+  doc.text('FRENTE DE ESTIBA · DPO 2.1', W/2, mx+6, {align:'center'});
+  doc.text(`REM ${remito.num}`, W-mx-6, mx+6, {align:'right'});
+  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(180,180,180);
+  doc.text(`${remito.prov}  ·  ${remito.fecha}  ${remito.hora}`, W/2, mx+11.5, {align:'center'});
 
   // ── LOGO ──
-  try { doc.addImage(LOGO_URL, 'JPEG', W-mx-28, mx+18, 20, 20); } catch(e){}
+  try { doc.addImage(LOGO_URL, 'JPEG', W-mx-22, mx+17, 16, 16); } catch(e){}
 
-  // ── CÓDIGO grande ──
   const cx = mx+6;
-  doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('CÓDIGO', cx, mx+24);
-  doc.setFontSize(38); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(it.cod, cx, mx+42);
+  const bodyY = mx+16;
 
-  // ── DESCRIPCIÓN ──
-  doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...dkgray);
-  const desc = it.desc.length>55 ? it.desc.substring(0,55)+'…' : it.desc;
-  doc.text(desc, cx, mx+52);
+  // ── CÓDIGO (más chico) ──
+  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
+  doc.text('CÓDIGO', cx, bodyY+6);
+  doc.setFontSize(22); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(it.cod, cx, bodyY+17);
 
-  // ── LÍNEA ──
-  doc.setDrawColor(...lgray); doc.setLineWidth(0.3);
-  doc.line(cx, mx+57, W-mx-6, mx+57);
+  // ── DESCRIPCIÓN (más grande) ──
+  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(...dkgray);
+  const desc = it.desc.length>58 ? it.desc.substring(0,58)+'…' : it.desc;
+  doc.text(desc, cx, bodyY+26);
 
-  // ── VENCIMIENTO ──
-  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(...gold);
-  doc.text('VENCIMIENTO', cx, mx+65);
+  // ── LÍNEA DIVISORIA ──
+  doc.setDrawColor(...lgray); doc.setLineWidth(0.25);
+  doc.line(cx, bodyY+30, W-mx-6, bodyY+30);
+
+  // ── VENCIMIENTO (más grande) ──
+  doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(...gold);
+  doc.text('VENCIMIENTO', cx, bodyY+38);
 
   const vTxt  = it.venc || 'SIN FECHA';
   const vBoxW = W - mx*2 - 12;
   doc.setFillColor(...yellow);
-  doc.roundedRect(cx, mx+68, vBoxW, 22, 3, 3, 'F');
-  doc.setFontSize(32); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(vTxt, cx + vBoxW/2, mx+83, {align:'center'});
+  doc.roundedRect(cx, bodyY+41, vBoxW, 24, 3, 3, 'F');
+  doc.setFontSize(38); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(vTxt, cx + vBoxW/2, bodyY+57, {align:'center'});
 
   // ── QR CODE ──
-  const qrY = mx+92;
-  const qrSize = 28;
+  const qrY = bodyY+68;
+  const qrSize = 30;
   if (qrUrl) {
-    try {
-      doc.addImage(qrUrl, 'PNG', cx, qrY, qrSize, qrSize);
-    } catch(e){}
+    try { doc.addImage(qrUrl, 'PNG', cx, qrY, qrSize, qrSize); } catch(e){}
   }
-  // QR label
-  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('ESCANEAR', cx + qrSize/2, qrY + qrSize + 3.5, {align:'center'});
+  doc.setFontSize(5); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
+  doc.text('ESCANEAR', cx + qrSize/2, qrY + qrSize + 3, {align:'center'});
 
-  // ── GRID DE DATOS (2 filas × 3 cols) — shifted right to leave room for QR ──
-  const gridX = cx + qrSize + 4;
-  const gridW = W - mx*2 - 12 - qrSize - 4;
+  // ── GRID DE DATOS (3×3, a la derecha del QR) ──
+  const gridX = cx + qrSize + 5;
+  const gridW = W - mx*2 - 12 - qrSize - 5;
   const gridY = qrY;
   const cells = [
     ['BULTOS / PALLET', it.bulPal||'—'],
@@ -775,48 +737,48 @@ function drawFrente(doc, it, palletNum, W, H, qrUrl) {
     ['HL / BULTO',      it.d.hl||'—'],
     ['ABC',             it.d.abc||'—'],
   ];
-  const cW = gridW / 3;
-  const cH = 16;
+  const cW = gridW / 3 - 1.5;
+  const cH = 15;
   cells.forEach((c,i) => {
     const col = i%3, row = Math.floor(i/3);
-    const gx = gridX + col*(cW+1.5);
+    const gx = gridX + col*(cW+2);
     const gy = gridY + row*(cH+2);
-    doc.setFillColor(...lgray); doc.setDrawColor(220,220,220); doc.setLineWidth(0.2);
+    doc.setFillColor(...cream); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
     doc.roundedRect(gx, gy, cW, cH, 2, 2, 'FD');
-    doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-    doc.text(c[0], gx+3, gy+6);
+    doc.setFontSize(5.5); doc.setFont('helvetica','bold'); doc.setTextColor(...gray);
+    doc.text(c[0], gx+3, gy+5.5);
     doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-    doc.text(String(c[1]).substring(0,18), gx+3, gy+14);
+    doc.text(String(c[1]).substring(0,20), gx+3, gy+12.5);
   });
 
-  // ── RECEPCIÓN ──
-  const recY = gridY + 3*(cH+2) + 6;
-  const recW = W - mx*2 - 12;
-  doc.setFillColor(250,252,255); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
-  doc.roundedRect(cx, recY, recW, 14, 2, 2, 'FD');
-  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('RECEPCIÓN', cx+4, recY+5);
-  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(remito.fecha, cx+4, recY+11);
-  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('CONTROLADOR', cx+recW/2, recY+5, {align:'center'});
-  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(ctrl, cx+recW/2, recY+11, {align:'center'});
-
-  // ── FOOTER ──
-  const ftY = H - mx - 14;
-  doc.setDrawColor(...lgray); doc.setLineWidth(0.3);
+  // ── BARRA INFERIOR: RECEPCIÓN + CONTROLADOR + PALLET ──
+  const ftY = H - mx - 18;
+  doc.setDrawColor(...lgray); doc.setLineWidth(0.25);
   doc.line(cx, ftY, W-mx-6, ftY);
 
-  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
-  doc.text('PALLET:', cx, ftY+7);
-  doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
-  doc.text(`${palletNum} / ${it.nFrentes}`, cx+18, ftY+7);
+  const recW = (W-mx*2-12) * 0.6;
+  doc.setFillColor(250,252,255); doc.setDrawColor(...lgray); doc.setLineWidth(0.2);
+  doc.roundedRect(cx, ftY+2, recW, 12, 2, 2, 'FD');
 
-  // Pallet number watermark
-  doc.setFontSize(48); doc.setFont('helvetica','bold');
-  doc.setTextColor(245,247,252);
-  doc.text(`${palletNum}`, W-mx-8, ftY-4, {align:'right'});
+  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
+  doc.text('RECEPCIÓN', cx+4, ftY+7);
+  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(remito.fecha, cx+4, ftY+12.5);
+
+  doc.setFontSize(5.5); doc.setFont('helvetica','normal'); doc.setTextColor(...gray);
+  doc.text('CONTROLADOR', cx+recW/2, ftY+7, {align:'center'});
+  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(...navy);
+  doc.text(ctrl, cx+recW/2, ftY+12.5, {align:'center'});
+
+  // Pallet badge
+  const palX = cx + recW + 4;
+  const palW = W - mx*2 - 12 - recW - 4;
+  doc.setFillColor(...navy);
+  doc.roundedRect(palX, ftY+2, palW, 12, 2, 2, 'F');
+  doc.setFontSize(5.5); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text('PALLET', palX + palW/2, ftY+7, {align:'center'});
+  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(...yellow);
+  doc.text(`${palletNum} / ${it.nFrentes}`, palX + palW/2, ftY+13.5, {align:'center'});
 }
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
